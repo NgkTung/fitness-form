@@ -36,16 +36,18 @@ const Register = () => {
   const errRing = "border-red-500 focus:ring-2 focus:ring-red-600";
 
   return (
-    <div className="w-full max-w-md space-y-8">
+    <div className="w-full max-w-md mx-auto px-6 sm:px-8 md:px-0 space-y-8">
       <div className="text-center">
-        <h1 className="text-4xl font-extrabold text-gray-900">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900">
           Create Account
         </h1>
-        <p className="text-gray-500 mt-2">Join our fitness community today</p>
+        <p className="text-gray-500 mt-2 text-sm sm:text-base">
+          Join our fitness community today
+        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               First Name
@@ -116,13 +118,13 @@ const Register = () => {
 
         <button
           type="submit"
-          className="w-full py-3 bg-blue-800 text-white font-semibold rounded-xl hover:bg-blue-900 transition-all shadow-md"
+          className="w-full py-3 bg-blue-800 text-white font-semibold rounded-xl hover:bg-blue-900 transition-all shadow-md text-base sm:text-lg"
         >
           Create Account
         </button>
       </form>
 
-      <div className="text-center text-gray-600">
+      <div className="text-center text-gray-600 text-sm sm:text-base">
         Already have an account?{" "}
         <Link to="/login" className="text-blue-800 font-medium hover:underline">
           Sign In
