@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   LineChart,
   Line,
@@ -9,6 +11,9 @@ import {
 } from "recharts";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const weightData = [
     { day: "Nov 10", weight: 65.2 },
     { day: "Nov 15", weight: 64.8 },
@@ -17,6 +22,13 @@ const Dashboard = () => {
   ];
 
   const bmi = 24.0;
+
+  useEffect(() => {
+    const stored = localStorage.getItem("fitnessUserData");
+    if (!stored && location.pathname !== "/onboarding") {
+      navigate("/onboarding", { replace: true });
+    }
+  }, [navigate, location.pathname]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-950 to-blue-800 text-white p-8">
