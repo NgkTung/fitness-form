@@ -1,45 +1,29 @@
 import type React from "react";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useLogin } from "../hooks/auth/useLogin";
 
-const SignIn = () => {
+const schema = z.object({
+  username: z.string().trim().min(1, "Username is required"),
+  password: z.string().trim().min(1, "Password is required"),
+});
+
+type FormValues = z.infer<typeof schema>;
+
+const SignIn: React.FC = () => {
   const navigate = useNavigate();
-  const [loginData, setLoginData] = useState({ username: "", password: "" });
-  const [errors, setErrors] = useState<{
-    username?: string;
-    password?: string;
-  }>({});
+  const { mutateAsync, isPending, isError, error } = useLogin();
 
-  const setFieldError = (name: "username" | "password", msg?: string) =>
-    setErrors((prev) => ({ ...prev, [name]: msg }));
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({ resolver: zodResolver(schema) });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target as {
-      name: "username" | "password";
-      value: string;
-    };
-    setLoginData((prev) => ({ ...prev, [name]: value }));
-    if (value.trim()) setFieldError(name, undefined);
-  };
-
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    const { name, value } = e.target as {
-      name: "username" | "password";
-      value: string;
-    };
-    if (!value.trim()) setFieldError(name, "This field is required");
-  };
-
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    const nextErrors: typeof errors = {};
-    if (!loginData.username.trim())
-      nextErrors.username = "Username is required";
-    if (!loginData.password.trim())
-      nextErrors.password = "Password is required";
-    setErrors(nextErrors);
-    if (Object.keys(nextErrors).length) return;
-    localStorage.setItem("token", "dummy-token");
+  const onSubmit = async (values: FormValues) => {
+    await mutateAsync(values);
     navigate("/");
   };
 
@@ -55,23 +39,22 @@ const SignIn = () => {
         <p className="text-gray-500 mt-2">Sign in to continue your journey</p>
       </div>
 
-      <form className="space-y-6" onSubmit={handleLogin} noValidate>
+      <form className="space-y-6" onSubmit={handleSubmit(onSubmit)} noValidate>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Username
           </label>
           <input
             type="text"
-            name="username"
-            value={loginData.username}
-            onChange={handleChange}
-            onBlur={handleBlur}
+            {...register("username")}
             placeholder="Enter your username"
             aria-invalid={!!errors.username}
             className={`${baseInput} ${errors.username ? errRing : okRing}`}
           />
           {errors.username && (
-            <p className="mt-2 text-sm text-red-600">{errors.username}</p>
+            <p className="mt-2 text-sm text-red-600">
+              {errors.username.message}
+            </p>
           )}
         </div>
 
@@ -81,36 +64,30 @@ const SignIn = () => {
           </label>
           <input
             type="password"
-            name="password"
-            value={loginData.password}
-            onChange={handleChange}
-            onBlur={handleBlur}
+            {...register("password")}
             placeholder="Enter your password"
             aria-invalid={!!errors.password}
             className={`${baseInput} ${errors.password ? errRing : okRing}`}
           />
           {errors.password && (
-            <p className="mt-2 text-sm text-red-600">{errors.password}</p>
+            <p className="mt-2 text-sm text-red-600">
+              {errors.password.message}
+            </p>
           )}
         </div>
 
-        <div className="flex items-center justify-between text-sm">
-          <a href="#" className="text-blue-800 font-medium hover:underline">
-            Forgot password?
-          </a>
-          <Link
-            to="/register"
-            className="text-gray-700 font-medium hover:text-blue-800"
-          >
-            Create Account
-          </Link>
-        </div>
+        {isError && (
+          <p className="text-sm text-red-600">
+            {(error as any)?.message || "Login failed"}
+          </p>
+        )}
 
         <button
           type="submit"
+          disabled={isPending}
           className="w-full py-3 bg-blue-800 text-white font-semibold rounded-xl hover:bg-blue-900 transition-all shadow-md"
         >
-          Sign In
+          {isPending ? "Signing in..." : "Sign In"}
         </button>
       </form>
 

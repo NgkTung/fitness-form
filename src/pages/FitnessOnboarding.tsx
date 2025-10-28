@@ -150,7 +150,6 @@ export default function FitnessOnboarding() {
                   {[
                     { label: "Male", icon: "♂️" },
                     { label: "Female", icon: "♀️" },
-                    { label: "Other", icon: "⚧️" },
                   ].map((item) => (
                     <button
                       key={item.label}
