@@ -3,14 +3,20 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Lottie from "lottie-react";
 import analyzeAnimation from "../animations/loading.json";
+import { useUpdateProfile } from "../hooks/profile/useUpdateProfile";
+import { useProfile } from "../hooks/profile/useProfile";
+import type { User } from "../types/user.type";
 
 interface FormData {
-  gender: string;
-  height: string;
-  weight: string;
-  pushups: string;
-  place: string;
-  goal: string;
+  height_cm: number;
+  weight_kg: number;
+  age: number;
+  gender: "male" | "female" | "other";
+  activity_level: "low" | "moderate" | "high" | null;
+  main_goal: "build_muscle" | "lose_fat" | "maintain";
+  experience_level: "beginner" | "intermediate" | "advanced";
+  days_per_week: number;
+  equipment_available: "none" | "home" | "full_gym";
 }
 
 interface Step {
@@ -21,91 +27,108 @@ interface Step {
 
 const steps: Step[] = [
   { id: 0, key: "welcome", question: "Welcome to FitJourney! 🏋️‍♂️" },
-  { id: 1, key: "gender", question: "What's your gender?" },
-  { id: 2, key: "height", question: "How tall are you? (cm)" },
-  { id: 3, key: "weight", question: "What’s your current weight? (kg)" },
+  { id: 1, key: "gender", question: "What’s your gender?" },
+  { id: 2, key: "age", question: "How old are you?" },
+  { id: 3, key: "height_cm", question: "What’s your height? (cm)" },
+  { id: 4, key: "weight_kg", question: "What’s your current weight? (kg)" },
   {
-    id: 4,
-    key: "pushups",
-    question: "How many push-ups can you do in one round?",
+    id: 5,
+    key: "activity_level",
+    question: "How active are you in daily life?",
   },
-  { id: 5, key: "place", question: "Where do you usually work out?" },
-  { id: 6, key: "goal", question: "What’s your fitness goal?" },
-  { id: 7, key: "analyzing", question: "Analyzing your data..." },
-  { id: 8, key: "finish", question: "Thank you for your information! 🎉" },
+  {
+    id: 6,
+    key: "experience_level",
+    question: "What’s your training experience?",
+  },
+  {
+    id: 7,
+    key: "days_per_week",
+    question: "How many days per week can you train?",
+  },
+  {
+    id: 8,
+    key: "equipment_available",
+    question: "What equipment do you have access to?",
+  },
+  { id: 9, key: "main_goal", question: "What’s your main fitness goal?" },
+  { id: 10, key: "analyzing", question: "Analyzing your data..." },
+  { id: 11, key: "finish", question: "You’re all set! 🎉" },
 ];
 
 export default function FitnessOnboarding() {
+  const { data, isSuccess } = useProfile();
+  const updateMutation = useUpdateProfile();
   const navigate = useNavigate();
+
   const [step, setStep] = useState<number>(0);
-  const [formData, setFormData] = useState<FormData>({
-    gender: "",
-    height: "",
-    weight: "",
-    pushups: "",
-    place: "",
-    goal: "",
+  const [formData, setFormData] = useState<User>({
+    username: "",
+    email: "",
+    height_cm: 0,
+    weight_kg: 0,
+    age: 0,
+    gender: "male",
+    activity_level: null,
+    main_goal: "build_muscle",
+    experience_level: "beginner",
+    days_per_week: 3,
+    equipment_available: "home",
   });
-  const [error, setError] = useState<string>("");
-  const [progress, setProgress] = useState<number>(0);
-  const [analyzeText, setAnalyzeText] = useState<string>(
-    "Analyzing your data..."
-  );
+
+  const [error, setError] = useState("");
+  const [progress, setProgress] = useState(0);
+  const [analyzeText, setAnalyzeText] = useState("Analyzing your data...");
 
   useEffect(() => {
     const stored = localStorage.getItem("fitnessUserData");
     if (stored) navigate("/dashboard");
   }, [navigate]);
 
+  const handleChange = (key: keyof FormData, value: string | number | null) => {
+    setFormData((prev) => ({ ...prev, [key]: value }));
+  };
+
   const validateStep = (): boolean => {
     setError("");
-    const { height, weight } = formData;
-    if (step === 2) {
-      const h = Number(height);
-      if (!h || h < 100 || h > 250) {
-        setError("Please enter a realistic height between 100 cm and 250 cm.");
-        return false;
-      }
+    if (step === 3 && (formData.height_cm < 100 || formData.height_cm > 250)) {
+      setError("Please enter a realistic height between 100–250 cm.");
+      return false;
     }
-    if (step === 3) {
-      const w = Number(weight);
-      if (!w || w < 30 || w > 250) {
-        setError("Please enter a realistic weight between 30 kg and 250 kg.");
-        return false;
-      }
+    if (step === 4 && (formData.weight_kg < 30 || formData.weight_kg > 250)) {
+      setError("Please enter a realistic weight between 30–250 kg.");
+      return false;
     }
     return true;
   };
 
-  const nextStep = (): void => {
+  const nextStep = () => {
     if (step > 0 && step < steps.length - 1 && !validateStep()) return;
-    setStep((prev) => Math.min(prev + 1, steps.length - 1));
+    setStep((s) => Math.min(s + 1, steps.length - 1));
   };
 
-  const prevStep = (): void => setStep((prev) => Math.max(prev - 1, 0));
+  const prevStep = () => setStep((s) => Math.max(s - 1, 0));
 
-  const handleChange = (key: keyof FormData, value: string): void => {
-    setFormData({ ...formData, [key]: value });
-  };
-
-  const handleSubmit = (): void => {
+  const handleSubmit = () => {
     if (!validateStep()) return;
     localStorage.setItem("fitnessUserData", JSON.stringify(formData));
-    setStep(7);
+    updateMutation.mutate(formData);
+    setStep(10);
+
     let p = 0;
     const messages = [
       "Analyzing your data...",
-      "Evaluating your current performance...",
-      "Matching best practices for your goals...",
+      "Evaluating your training potential...",
+      "Matching best workouts for your goal...",
       "Building your personalized fitness plan...",
       "Almost there...",
     ];
     let msgIndex = 0;
     const interval = setInterval(() => {
-      p += 1;
+      p += 2;
       if (p > 100) {
         clearInterval(interval);
-        setStep(8);
+        setStep(11);
         setTimeout(() => navigate("/dashboard"), 3000);
       } else {
         setProgress(p);
@@ -117,8 +140,16 @@ export default function FitnessOnboarding() {
     }, 100);
   };
 
+  useEffect(() => {
+    if (isSuccess && data) {
+      setFormData(() => ({
+        ...data,
+      }));
+    }
+  }, [isSuccess, data]);
+
   return (
-    <div className="flex flex-col justify-between min-h-screen w-full bg-gradient-to-b from-blue-950 to-blue-800 text-white px-4 sm:px-8 py-6 sm:py-8 overflow-hidden">
+    <div className="flex flex-col justify-between min-h-screen bg-gradient-to-b from-blue-950 to-blue-800 text-white px-4 sm:px-8 py-6 sm:py-8">
       <div className="w-full">
         <AnimatePresence mode="wait">
           <motion.div
@@ -129,45 +160,44 @@ export default function FitnessOnboarding() {
             transition={{ duration: 0.4 }}
             className="flex flex-col items-center justify-center text-center h-[70vh]"
           >
+            {/* Step 0 - Welcome */}
             {step === 0 && (
               <div>
-                <h1 className="text-3xl sm:text-5xl font-extrabold mb-8">
+                <h1 className="text-4xl sm:text-5xl font-extrabold mb-8">
                   {steps[step].question}
                 </h1>
-                <p className="text-lg sm:text-2xl max-w-3xl leading-relaxed mx-auto">
-                  Before we get started, we just need a few quick details from
-                  you so we can personalize your training experience. 💪
+                <p className="text-lg sm:text-2xl max-w-3xl mx-auto leading-relaxed">
+                  Before we start, let’s grab a few quick details to tailor your
+                  perfect training journey 💪
                 </p>
               </div>
             )}
 
+            {/* Gender */}
             {step === 1 && (
               <>
-                <h2 className="text-3xl sm:text-5xl font-extrabold mb-12 leading-tight">
+                <h2 className="text-4xl font-bold mb-10">
                   {steps[step].question}
                 </h2>
-                <div className="flex flex-wrap justify-center gap-6 sm:gap-8 w-full">
-                  {[
-                    { label: "Male", icon: "♂️" },
-                    { label: "Female", icon: "♀️" },
-                  ].map((item) => (
+                <div className="flex gap-6 flex-wrap justify-center">
+                  {["male", "female", "other"].map((g) => (
                     <button
-                      key={item.label}
-                      onClick={() => handleChange("gender", item.label)}
-                      className={`flex items-center justify-center gap-3 px-8 sm:px-12 py-4 sm:py-6 text-lg sm:text-2xl rounded-3xl border transition-all ${
-                        formData.gender === item.label
+                      key={g}
+                      onClick={() => handleChange("gender", g)}
+                      className={`px-10 py-5 rounded-3xl text-2xl border transition ${
+                        formData.gender === g
                           ? "bg-white text-blue-900 font-bold"
                           : "border-white/40 hover:bg-white/20"
                       }`}
                     >
-                      <span className="text-3xl sm:text-4xl">{item.icon}</span>
-                      {item.label}
+                      {g.charAt(0).toUpperCase() + g.slice(1)}
                     </button>
                   ))}
                 </div>
               </>
             )}
 
+            {/* Age */}
             {step === 2 && (
               <div className="flex flex-col items-center w-full">
                 <h2 className="text-3xl sm:text-5xl font-extrabold mb-12 leading-tight">
@@ -175,15 +205,15 @@ export default function FitnessOnboarding() {
                 </h2>
                 <input
                   type="number"
-                  value={formData.height}
-                  onChange={(e) => handleChange("height", e.target.value)}
-                  className="w-full max-w-md sm:max-w-2xl py-4 sm:py-6 text-3xl sm:text-5xl text-center text-blue-900 rounded-3xl bg-white outline-none"
-                  placeholder="Enter your height"
+                  value={formData.age || ""}
+                  onChange={(e) => handleChange("age", Number(e.target.value))}
+                  placeholder="Enter your age"
+                  className="w-full max-w-2xl py-4 sm:py-6 text-3xl sm:text-5xl text-center text-blue-900 rounded-3xl bg-white outline-none"
                 />
-                {error && <p className="text-red-400 mt-4 text-lg">{error}</p>}
               </div>
             )}
 
+            {/* Height */}
             {step === 3 && (
               <div className="flex flex-col items-center w-full">
                 <h2 className="text-3xl sm:text-5xl font-extrabold mb-12 leading-tight">
@@ -191,88 +221,161 @@ export default function FitnessOnboarding() {
                 </h2>
                 <input
                   type="number"
-                  value={formData.weight}
-                  onChange={(e) => handleChange("weight", e.target.value)}
-                  className="w-full max-w-md sm:max-w-2xl py-4 sm:py-6 text-3xl sm:text-5xl text-center text-blue-900 rounded-3xl bg-white outline-none"
-                  placeholder="Enter your weight"
+                  value={formData.height_cm || ""}
+                  onChange={(e) =>
+                    handleChange("height_cm", Number(e.target.value))
+                  }
+                  placeholder="Enter your height (cm)"
+                  className="w-full max-w-2xl py-4 sm:py-6 text-3xl sm:text-5xl text-center text-blue-900 rounded-3xl bg-white outline-none"
                 />
                 {error && <p className="text-red-400 mt-4 text-lg">{error}</p>}
               </div>
             )}
 
+            {/* Weight */}
             {step === 4 && (
-              <>
+              <div className="flex flex-col items-center w-full">
                 <h2 className="text-3xl sm:text-5xl font-extrabold mb-12 leading-tight">
                   {steps[step].question}
                 </h2>
-                <div className="flex justify-center gap-4 sm:gap-6 w-full flex-wrap sm:flex-nowrap">
-                  {["<10", "10-20", "20-40", "40+"].map((range) => (
-                    <button
-                      key={range}
-                      onClick={() => handleChange("pushups", range)}
-                      className={`w-28 sm:w-36 h-20 sm:h-24 flex items-center justify-center gap-2 sm:gap-3 text-lg sm:text-2xl rounded-3xl border transition-all ${
-                        formData.pushups === range
-                          ? "bg-white text-blue-900 font-bold"
-                          : "border-white/40 hover:bg-white/20"
-                      }`}
-                    >
-                      <span className="text-2xl sm:text-3xl">💪</span>
-                      {range}
-                    </button>
-                  ))}
-                </div>
-              </>
+                <input
+                  type="number"
+                  value={formData.weight_kg || ""}
+                  onChange={(e) =>
+                    handleChange("weight_kg", Number(e.target.value))
+                  }
+                  placeholder="Enter your weight (kg)"
+                  className="w-full max-w-2xl py-4 sm:py-6 text-3xl sm:text-5xl text-center text-blue-900 rounded-3xl bg-white outline-none"
+                />
+                {error && <p className="text-red-400 mt-4 text-lg">{error}</p>}
+              </div>
             )}
 
+            {/* Activity Level */}
             {step === 5 && (
               <>
-                <h2 className="text-3xl sm:text-5xl font-extrabold mb-12 leading-tight">
+                <h2 className="text-4xl font-bold mb-10">
                   {steps[step].question}
                 </h2>
-                <div className="flex flex-wrap justify-center gap-6 sm:gap-8 w-full">
+                <div className="flex flex-col gap-4 w-full max-w-md">
                   {[
-                    { label: "Home", icon: "🏠" },
-                    { label: "Gym", icon: "🏋️" },
-                    { label: "Outdoor", icon: "⛰️" },
-                  ].map((item) => (
+                    { value: "low", label: "Low (Sedentary 🧘‍♂️)" },
+                    { value: "moderate", label: "Moderate (Active 🚶‍♂️)" },
+                    { value: "high", label: "High (Very Active 🏃‍♂️)" },
+                  ].map((lvl) => (
                     <button
-                      key={item.label}
-                      onClick={() => handleChange("place", item.label)}
-                      className={`flex flex-col items-center justify-center gap-2 sm:gap-4 w-28 h-28 sm:w-40 sm:h-40 rounded-3xl border text-lg sm:text-2xl transition-all ${
-                        formData.place === item.label
+                      key={lvl.value}
+                      onClick={() => handleChange("activity_level", lvl.value)}
+                      className={`py-4 rounded-3xl text-xl border transition ${
+                        formData.activity_level === lvl.value
                           ? "bg-white text-blue-900 font-bold"
                           : "border-white/40 hover:bg-white/20"
                       }`}
                     >
-                      <span className="text-4xl sm:text-5xl">{item.icon}</span>
-                      {item.label}
+                      {lvl.label}
                     </button>
                   ))}
                 </div>
               </>
             )}
 
+            {/* Experience Level */}
             {step === 6 && (
               <>
-                <h2 className="text-3xl sm:text-5xl font-extrabold mb-12 leading-tight">
+                <h2 className="text-4xl font-bold mb-10">
                   {steps[step].question}
                 </h2>
-                <div className="flex flex-col gap-6 w-full max-w-2xl">
-                  {[
-                    { label: "Lose weight", icon: "🔥" },
-                    { label: "Gain muscle", icon: "💪" },
-                    { label: "Maintain", icon: "⚖️" },
-                  ].map((goal) => (
+                <div className="flex gap-6 flex-wrap justify-center">
+                  {["beginner", "intermediate", "advanced"].map((lvl) => (
                     <button
-                      key={goal.label}
-                      onClick={() => handleChange("goal", goal.label)}
-                      className={`w-full flex items-center justify-center gap-4 py-4 sm:py-6 text-lg sm:text-2xl rounded-3xl border transition-all ${
-                        formData.goal === goal.label
+                      key={lvl}
+                      onClick={() => handleChange("experience_level", lvl)}
+                      className={`px-8 py-5 rounded-3xl text-2xl border transition ${
+                        formData.experience_level === lvl
                           ? "bg-white text-blue-900 font-bold"
                           : "border-white/40 hover:bg-white/20"
                       }`}
                     >
-                      <span className="text-2xl sm:text-3xl">{goal.icon}</span>
+                      {lvl.charAt(0).toUpperCase() + lvl.slice(1)}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {/* Days Per Week */}
+            {step === 7 && (
+              <div className="flex flex-col items-center w-full">
+                <h2 className="text-3xl sm:text-5xl font-extrabold mb-12 leading-tight">
+                  {steps[step].question}
+                </h2>
+                <input
+                  type="number"
+                  value={formData.days_per_week}
+                  onChange={(e) =>
+                    handleChange("days_per_week", Number(e.target.value))
+                  }
+                  min={1}
+                  max={7}
+                  placeholder="1 - 7"
+                  className="w-full max-w-2xl py-4 sm:py-6 text-3xl sm:text-5xl text-center text-blue-900 rounded-3xl bg-white outline-none"
+                />
+                <p className="text-blue-200 mt-3 text-lg">
+                  Consistency is key 🔥 — even 3–4 days a week can make great
+                  progress!
+                </p>
+              </div>
+            )}
+
+            {/* Equipment */}
+            {step === 8 && (
+              <>
+                <h2 className="text-4xl font-bold mb-10">
+                  {steps[step].question}
+                </h2>
+                <div className="flex gap-6 flex-wrap justify-center">
+                  {["none", "home", "full_gym"].map((eq) => (
+                    <button
+                      key={eq}
+                      onClick={() => handleChange("equipment_available", eq)}
+                      className={`px-8 py-5 rounded-3xl text-2xl border transition ${
+                        formData.equipment_available === eq
+                          ? "bg-white text-blue-900 font-bold"
+                          : "border-white/40 hover:bg-white/20"
+                      }`}
+                    >
+                      {eq === "none"
+                        ? "No Equipment"
+                        : eq === "home"
+                        ? "Home"
+                        : "Full Gym"}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {/* Goal */}
+            {step === 9 && (
+              <>
+                <h2 className="text-4xl font-bold mb-10">
+                  {steps[step].question}
+                </h2>
+                <div className="flex flex-col gap-4 w-full max-w-md">
+                  {[
+                    { value: "build_muscle", label: "Build Muscle 💪" },
+                    { value: "lose_fat", label: "Lose Fat 🔥" },
+                    { value: "maintain", label: "Maintain ⚖️" },
+                  ].map((goal) => (
+                    <button
+                      key={goal.value}
+                      onClick={() => handleChange("main_goal", goal.value)}
+                      className={`py-4 rounded-3xl text-xl border transition ${
+                        formData.main_goal === goal.value
+                          ? "bg-white text-blue-900 font-bold"
+                          : "border-white/40 hover:bg-white/20"
+                      }`}
+                    >
                       {goal.label}
                     </button>
                   ))}
@@ -280,37 +383,37 @@ export default function FitnessOnboarding() {
               </>
             )}
 
-            {step === 7 && (
+            {/* Analyzing */}
+            {step === 10 && (
               <div className="flex flex-col items-center justify-center">
                 <Lottie
                   animationData={analyzeAnimation}
                   loop
                   style={{ width: 220, height: 220 }}
                 />
-                <h2 className="text-3xl sm:text-4xl font-bold mt-6 mb-3">
-                  {analyzeText}
-                </h2>
-                <div className="w-64 sm:w-96 h-3 bg-white/20 rounded-full overflow-hidden">
+                <h2 className="text-3xl font-bold mt-6 mb-3">{analyzeText}</h2>
+                <div className="w-64 h-3 bg-white/20 rounded-full overflow-hidden">
                   <motion.div
                     className="h-3 bg-gradient-to-r from-cyan-400 to-blue-400"
                     animate={{ width: `${progress}%` }}
-                    transition={{ duration: 0.2, ease: "easeInOut" }}
+                    transition={{ duration: 0.2 }}
                   />
                 </div>
               </div>
             )}
 
-            {step === 8 && (
-              <div className="text-center">
-                <h2 className="text-3xl sm:text-5xl font-extrabold mb-8">
+            {/* Finish */}
+            {step === 11 && (
+              <div>
+                <h2 className="text-4xl font-bold mb-8">
                   {steps[step].question}
                 </h2>
-                <p className="text-lg sm:text-2xl max-w-2xl mx-auto leading-relaxed">
-                  Awesome job, {formData.gender || "friend"}! 💫
+                <p className="text-lg sm:text-2xl max-w-2xl mx-auto">
+                  Great job, {formData.gender === "male" ? "champ" : "warrior"}!
+                  💫
                   <br />
-                  Your details have been analyzed and saved successfully.
-                  <br />
-                  Redirecting you to your dashboard... 🚀
+                  Your personalized fitness plan is ready — launching your
+                  dashboard... 🚀
                 </p>
               </div>
             )}
@@ -318,8 +421,9 @@ export default function FitnessOnboarding() {
         </AnimatePresence>
       </div>
 
-      <div className="flex justify-between w-full mt-10">
-        {step > 0 && step < 6 ? (
+      {/* Controls */}
+      <div className="flex justify-between mt-10">
+        {step > 0 && step < 9 ? (
           <button
             onClick={prevStep}
             className="w-[48%] py-4 sm:py-6 rounded-3xl text-lg sm:text-2xl bg-white/20 hover:bg-white/30 transition"
@@ -339,28 +443,17 @@ export default function FitnessOnboarding() {
           </button>
         )}
 
-        {step > 0 &&
-          step < 6 &&
-          (() => {
-            const currentKey = steps[step].key;
-            const isFormStep = Object.prototype.hasOwnProperty.call(
-              formData,
-              currentKey
-            );
-            return (
-              <button
-                onClick={nextStep}
-                disabled={
-                  isFormStep ? !formData[currentKey as keyof FormData] : false
-                }
-                className="w-[48%] py-4 sm:py-6 rounded-3xl text-lg sm:text-2xl bg-white text-blue-900 font-bold hover:bg-gray-100 transition disabled:opacity-50"
-              >
-                Next
-              </button>
-            );
-          })()}
+        {step > 0 && step < 9 && (
+          <button
+            onClick={nextStep}
+            disabled={!formData[steps[step].key as keyof FormData]}
+            className="w-[48%] py-4 sm:py-6 rounded-3xl text-lg sm:text-2xl bg-white text-blue-900 font-bold hover:bg-gray-100 transition disabled:opacity-50"
+          >
+            Next
+          </button>
+        )}
 
-        {step === 6 && (
+        {step === 9 && (
           <button
             onClick={handleSubmit}
             className="w-[48%] py-4 sm:py-6 rounded-3xl text-lg sm:text-2xl bg-gradient-to-r from-cyan-400 to-blue-400 font-bold text-blue-950 hover:opacity-90 transition"

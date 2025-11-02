@@ -1,6 +1,6 @@
 // src/hooks/useRegister.ts
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { register } from "../../lib/auth";
+import { register } from "../../lib/api/auth";
 import { useAuthStore } from "../../store/useAuthStore";
 
 export function useRegister() {

@@ -3,7 +3,10 @@ import Cookies from "js-cookie";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const api = axios.create({ baseURL: `${API_URL}/api/v1` });
+const api = axios.create({
+  baseURL: `${API_URL}/api/v1`,
+  timeout: 15000,
+});
 
 api.interceptors.request.use((config) => {
   const key = Cookies.get("key");

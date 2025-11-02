@@ -1,8 +1,8 @@
 import { Navigate } from "react-router-dom";
-import { useAuthStore } from "../store/useAuthStore";
+import Cookies from "js-cookie";
 
 const PublicRoute = ({ children }: { children: React.ReactNode }) => {
-  const isAuthenticated = useAuthStore((s) => s.key);
+  const isAuthenticated = Cookies.get("key");
 
   if (isAuthenticated) return <Navigate to="/dashboard" replace />;
   return <>{children}</>;

@@ -78,14 +78,19 @@ const SignIn: React.FC = () => {
 
         {isError && (
           <p className="text-sm text-red-600">
-            {(error as any)?.message || "Login failed"}
+            {error?.message || "Login failed"}
           </p>
         )}
 
         <button
           type="submit"
           disabled={isPending}
-          className="w-full py-3 bg-blue-800 text-white font-semibold rounded-xl hover:bg-blue-900 transition-all shadow-md"
+          className={`w-full py-3 font-semibold rounded-xl transition-all shadow-md
+    ${
+      isPending
+        ? "bg-blue-300 text-white cursor-not-allowed shadow-none"
+        : "bg-blue-800 text-white hover:bg-blue-900"
+    }`}
         >
           {isPending ? "Signing in..." : "Sign In"}
         </button>
