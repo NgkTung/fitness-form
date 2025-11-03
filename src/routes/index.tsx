@@ -10,6 +10,7 @@ import SignIn from "../pages/SignIn";
 import Dashboard from "../pages/Dashboard";
 import FitnessOnboarding from "../pages/FitnessOnboarding";
 import Profile from "../pages/Profile";
+import Exercises from "../pages/Exercises";
 
 const AppRouter = () => {
   return (
@@ -56,6 +57,7 @@ const AppRouter = () => {
           }
         >
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/exercises" element={<Exercises />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<Dashboard />} />
         </Route>

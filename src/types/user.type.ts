@@ -5,9 +5,15 @@ export interface User {
   weight_kg: number;
   age: number;
   gender: "male" | "female" | "other";
-  activity_level: string | null;
-  main_goal: "build_muscle" | "lose_fat" | "maintain" | string;
+  activity_level:
+    | "sedentary"
+    | "light"
+    | "moderate"
+    | "active"
+    | "very_active"
+    | null;
+  main_goal: "build_muscle" | "lose_weight" | "maintain" | null;
   experience_level: "beginner" | "intermediate" | "advanced" | string;
   days_per_week: number;
-  equipment_available: "none" | "full_gym" | string;
+  equipment_available: "bodyweight" | "basic_gym" | "full_gym" | string;
 }

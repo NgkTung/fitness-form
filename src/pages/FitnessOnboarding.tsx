@@ -12,11 +12,17 @@ interface FormData {
   weight_kg: number;
   age: number;
   gender: "male" | "female" | "other";
-  activity_level: "low" | "moderate" | "high" | null;
-  main_goal: "build_muscle" | "lose_fat" | "maintain";
-  experience_level: "beginner" | "intermediate" | "advanced";
+  activity_level:
+    | "sedentary"
+    | "light"
+    | "moderate"
+    | "active"
+    | "very_active"
+    | null;
+  main_goal: "build_muscle" | "lose_weight" | "maintain" | null;
+  experience_level: "beginner" | "intermediate" | "advanced" | string;
   days_per_week: number;
-  equipment_available: "none" | "home" | "full_gym";
+  equipment_available: "bodyweight" | "basic_gym" | "full_gym" | string;
 }
 
 interface Step {
@@ -34,7 +40,7 @@ const steps: Step[] = [
   {
     id: 5,
     key: "activity_level",
-    question: "How active are you in daily life?",
+    question: "What best describes your daily activity level?",
   },
   {
     id: 6,
@@ -73,7 +79,7 @@ export default function FitnessOnboarding() {
     main_goal: "build_muscle",
     experience_level: "beginner",
     days_per_week: 3,
-    equipment_available: "home",
+    equipment_available: "basic_gym",
   });
 
   const [error, setError] = useState("");
@@ -259,9 +265,17 @@ export default function FitnessOnboarding() {
                 </h2>
                 <div className="flex flex-col gap-4 w-full max-w-md">
                   {[
-                    { value: "low", label: "Low (Sedentary 🧘‍♂️)" },
-                    { value: "moderate", label: "Moderate (Active 🚶‍♂️)" },
-                    { value: "high", label: "High (Very Active 🏃‍♂️)" },
+                    {
+                      value: "sedentary",
+                      label: "Sedentary (Little or no exercise 🪑)",
+                    },
+                    { value: "light", label: "Light (1–3 days/week 💃)" },
+                    { value: "moderate", label: "Moderate (3–5 days/week 🚶‍♂️)" },
+                    { value: "active", label: "Active (6–7 days/week 🏋️‍♀️)" },
+                    {
+                      value: "very_active",
+                      label: "Very Active (Intense training 🏃‍♂️)",
+                    },
                   ].map((lvl) => (
                     <button
                       key={lvl.value}
@@ -334,21 +348,29 @@ export default function FitnessOnboarding() {
                   {steps[step].question}
                 </h2>
                 <div className="flex gap-6 flex-wrap justify-center">
-                  {["none", "home", "full_gym"].map((eq) => (
+                  {[
+                    { value: "bodyweight", label: "Bodyweight Only 🧘‍♂️" },
+                    {
+                      value: "basic_gym",
+                      label: "Basic Gym (Dumbbells, Bench 🏋️)",
+                    },
+                    {
+                      value: "full_gym",
+                      label: "Full Gym (Machines, Weights 🏆)",
+                    },
+                  ].map((eq) => (
                     <button
-                      key={eq}
-                      onClick={() => handleChange("equipment_available", eq)}
+                      key={eq.value}
+                      onClick={() =>
+                        handleChange("equipment_available", eq.value)
+                      }
                       className={`px-8 py-5 rounded-3xl text-2xl border transition ${
-                        formData.equipment_available === eq
+                        formData.equipment_available === eq.value
                           ? "bg-white text-blue-900 font-bold"
                           : "border-white/40 hover:bg-white/20"
                       }`}
                     >
-                      {eq === "none"
-                        ? "No Equipment"
-                        : eq === "home"
-                        ? "Home"
-                        : "Full Gym"}
+                      {eq.label}
                     </button>
                   ))}
                 </div>
@@ -364,7 +386,7 @@ export default function FitnessOnboarding() {
                 <div className="flex flex-col gap-4 w-full max-w-md">
                   {[
                     { value: "build_muscle", label: "Build Muscle 💪" },
-                    { value: "lose_fat", label: "Lose Fat 🔥" },
+                    { value: "lose_weight", label: "Lose Weight 🔥" },
                     { value: "maintain", label: "Maintain ⚖️" },
                   ].map((goal) => (
                     <button

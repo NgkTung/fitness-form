@@ -80,7 +80,6 @@ const ProfilePage = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     updateMutation.mutate(formData, {
       onSuccess: () => {
         setAlert({ type: "success", text: "Profile updated successfully!" });
@@ -131,7 +130,6 @@ const ProfilePage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-blue-100 text-gray-800 px-8 py-12 relative">
-      {/* 🧭 Global Alert */}
       {alert && (
         <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[9999] w-[90%] max-w-md animate-fade-in">
           <Alert type={alert.type} text={alert.text} />
@@ -177,6 +175,26 @@ const ProfilePage = () => {
                 >
                   <option value="male">Male</option>
                   <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">
+                  Activity Level
+                </label>
+                <select
+                  name="activity_level"
+                  value={formData.activity_level ?? ""}
+                  onChange={handleChange}
+                  className="w-full rounded-xl border border-blue-100 px-4 py-2.5 bg-white text-gray-800 focus:ring-2 focus:ring-blue-400 focus:border-blue-300"
+                >
+                  <option value="">Select Activity Level</option>
+                  <option value="sedentary">Sedentary</option>
+                  <option value="light">Light</option>
+                  <option value="moderate">Moderate</option>
+                  <option value="active">Active</option>
+                  <option value="very_active">Very Active</option>
                 </select>
               </div>
 
@@ -186,13 +204,13 @@ const ProfilePage = () => {
                 </label>
                 <select
                   name="main_goal"
-                  value={formData.main_goal}
+                  value={formData.main_goal ?? ""}
                   onChange={handleChange}
                   className="w-full rounded-xl border border-blue-100 px-4 py-2.5 bg-white text-gray-800 focus:ring-2 focus:ring-blue-400 focus:border-blue-300"
                 >
                   <option value="build_muscle">Build Muscle</option>
                   <option value="lose_weight">Lose Weight</option>
-                  <option value="stay_fit">Stay Fit</option>
+                  <option value="maintain">Maintain</option>
                 </select>
               </div>
 
@@ -237,9 +255,9 @@ const ProfilePage = () => {
                   onChange={handleChange}
                   className="w-full rounded-xl border border-blue-100 px-4 py-2.5 bg-white text-gray-800 focus:ring-2 focus:ring-blue-400 focus:border-blue-300"
                 >
+                  <option value="bodyweight">Bodyweight</option>
+                  <option value="basic_gym">Basic Gym</option>
                   <option value="full_gym">Full Gym</option>
-                  <option value="home_basic">Home (Basic)</option>
-                  <option value="none">No Equipment</option>
                 </select>
               </div>
             </div>
@@ -261,7 +279,6 @@ const ProfilePage = () => {
           </form>
         </div>
 
-        {/* RIGHT SIDE */}
         <div className="space-y-8">
           <div className="bg-white/90 p-6 rounded-3xl border border-blue-100 shadow-md backdrop-blur-md">
             <h2 className="text-xl font-semibold text-blue-800 mb-4">
@@ -310,18 +327,18 @@ const ProfilePage = () => {
             <ul className="space-y-2 text-gray-700 text-sm">
               <li>
                 <strong>Goal:</strong>{" "}
-                {formData.main_goal.replace("_", " ").toUpperCase()}
+                {formData.main_goal?.replace("_", " ").toUpperCase()}
               </li>
               <li>
                 <strong>Experience:</strong>{" "}
-                {formData.experience_level.toUpperCase()}
+                {formData.experience_level?.toUpperCase()}
               </li>
               <li>
                 <strong>Days/Week:</strong> {formData.days_per_week}
               </li>
               <li>
                 <strong>Equipment:</strong>{" "}
-                {formData.equipment_available.replace("_", " ").toUpperCase()}
+                {formData.equipment_available?.replace("_", " ").toUpperCase()}
               </li>
             </ul>
           </div>

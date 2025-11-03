@@ -17,7 +17,7 @@ export const login = async (body: LoginBody) => {
 };
 
 export const register = async (body: RegisterBody) => {
-  const data = await request.post<Response>("/auth/registration", body);
+  const data = await request.post<Response>("/auth/registration/", body);
   Cookies.set("key", data.key, { sameSite: "lax", secure: true });
   return data;
 };

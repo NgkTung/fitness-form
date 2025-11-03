@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useRegister } from "../hooks/auth/useRegister";
 
 const Register = () => {
   const navigate = useNavigate();
   const [registerData, setRegisterData] = useState({
-    firstName: "",
-    lastName: "",
+    email: "",
     username: "",
-    password: "",
+    password1: "",
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const mutation = useRegister();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -26,8 +28,19 @@ const Register = () => {
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
 
-    localStorage.setItem("token", "dummy-token");
-    navigate("/");
+    mutation.mutate(
+      { ...registerData, password2: registerData.password1 },
+      {
+        onSuccess: (data) => {
+          console.log("✅ Registration successful:", data);
+          navigate("/login"); // redirect user to login after success
+        },
+        onError: (error: any) => {
+          console.error("Registration failed:", error);
+          setErrors({ email: "Email or username already exists" });
+        },
+      }
+    );
   };
 
   const baseInput =
@@ -47,41 +60,6 @@ const Register = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              First Name
-            </label>
-            <input
-              type="text"
-              name="firstName"
-              value={registerData.firstName}
-              onChange={handleChange}
-              className={`${baseInput} ${errors.firstName ? errRing : okRing}`}
-              placeholder="Enter your first name"
-            />
-            {errors.firstName && (
-              <p className="text-sm text-red-600 mt-1">{errors.firstName}</p>
-            )}
-          </div>
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Last Name
-            </label>
-            <input
-              type="text"
-              name="lastName"
-              value={registerData.lastName}
-              onChange={handleChange}
-              className={`${baseInput} ${errors.lastName ? errRing : okRing}`}
-              placeholder="Enter your last name"
-            />
-            {errors.lastName && (
-              <p className="text-sm text-red-600 mt-1">{errors.lastName}</p>
-            )}
-          </div>
-        </div>
-
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Username
@@ -101,18 +79,35 @@ const Register = () => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
+            Email
+          </label>
+          <input
+            type="email"
+            name="email"
+            value={registerData.email}
+            onChange={handleChange}
+            className={`${baseInput} ${errors.email ? errRing : okRing}`}
+            placeholder="Enter your email"
+          />
+          {errors.email && (
+            <p className="text-sm text-red-600 mt-1">{errors.email}</p>
+          )}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
             Password
           </label>
           <input
             type="password"
-            name="password"
-            value={registerData.password}
+            name="password1"
+            value={registerData.password1}
             onChange={handleChange}
-            className={`${baseInput} ${errors.password ? errRing : okRing}`}
+            className={`${baseInput} ${errors.password1 ? errRing : okRing}`}
             placeholder="Enter your password"
           />
-          {errors.password && (
-            <p className="text-sm text-red-600 mt-1">{errors.password}</p>
+          {errors.password1 && (
+            <p className="text-sm text-red-600 mt-1">{errors.password1}</p>
           )}
         </div>
 
