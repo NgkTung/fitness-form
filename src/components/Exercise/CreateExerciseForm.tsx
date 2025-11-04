@@ -2,8 +2,8 @@
 
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import type { CreateExerciseDto } from "../types/exercise.type";
-import { useCreateExercise } from "../hooks/exercise/useCreateExercise";
+import type { CreateExerciseDto } from "../../types/exercise.type";
+import { useCreateExercise } from "../../hooks/exercise/useCreateExercise";
 
 interface CreateExerciseFormProps {
   onSuccess: () => void;

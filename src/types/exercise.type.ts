@@ -4,6 +4,7 @@ export interface Exercise {
   description: string;
   video_url: string;
   muscle_group:
+    | ""
     | "legs"
     | "chest"
     | "back"
@@ -12,9 +13,10 @@ export interface Exercise {
     | "core"
     | "other"
     | string;
-  difficulty: "beginner" | "intermediate" | "advanced";
-  equipment: "bodyweight" | "basic_gym" | "full_gym";
+  difficulty: "" | "beginner" | "intermediate" | "advanced";
+  equipment: "" | "bodyweight" | "basic_gym" | "full_gym";
   movement_pattern:
+    | ""
     | "squat"
     | "hinge"
     | "horizontal_push"
@@ -31,6 +33,7 @@ export interface CreateExerciseDto {
   description: string;
   video_url?: string;
   muscle_group:
+    | ""
     | "legs"
     | "chest"
     | "back"
@@ -38,9 +41,10 @@ export interface CreateExerciseDto {
     | "arms"
     | "core"
     | "other";
-  difficulty: "beginner" | "intermediate" | "advanced";
-  equipment: "bodyweight" | "basic_gym" | "full_gym";
+  difficulty: "" | "beginner" | "intermediate" | "advanced";
+  equipment: "" | "bodyweight" | "basic_gym" | "full_gym";
   movement_pattern:
+    | ""
     | "squat"
     | "hinge"
     | "horizontal_push"

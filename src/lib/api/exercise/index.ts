@@ -3,6 +3,7 @@ import { request } from "../../request";
 
 interface Params {
   muscle_group:
+    | ""
     | "legs"
     | "chest"
     | "back"
@@ -10,9 +11,9 @@ interface Params {
     | "arms"
     | "core"
     | "other";
-  equipment: "bodyweight" | "basic_gym" | "full_gym";
-  difficulty: "beginner" | "intermediate" | "advanced";
-  movement_pattern: "squat" | "hinge" | "horizontal_push" | string;
+  equipment: "" | "bodyweight" | "basic_gym" | "full_gym";
+  difficulty: "" | "beginner" | "intermediate" | "advanced";
+  movement_pattern: "" | "squat" | "hinge" | "horizontal_push" | string;
 }
 
 export const getExercises = async (params: Params): Promise<Exercise[]> => {

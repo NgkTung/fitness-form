@@ -1,4 +1,4 @@
-interface PlanExercise {
+export interface PlanExercise {
   id: number;
   exercise_id: number;
   exercise_name: string;

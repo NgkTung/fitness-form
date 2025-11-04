@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   Home,
-  Activity,
+  NotebookPen,
   User,
   Settings,
   X,
@@ -17,7 +17,7 @@ type Props = {
 
 const navItems = [
   { name: "Dashboard", path: "/dashboard", icon: Home },
-  { name: "Progress", path: "/progress", icon: Activity },
+  { name: "Plans", path: "/plans", icon: NotebookPen },
   { name: "Exercises", path: "/exercises", icon: Dumbbell },
   { name: "Profile", path: "/profile", icon: User },
   { name: "Settings", path: "/settings", icon: Settings },

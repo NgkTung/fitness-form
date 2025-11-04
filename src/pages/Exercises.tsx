@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import { useExercises } from "../hooks/exercise/useExercise";
-import Modal from "../components/common/Modal"; // ✅ import your reusable modal
-import CreateExerciseForm from "../components/CreateExerciseForm";
+import Modal from "../components/common/Modal";
+import CreateExerciseForm from "../components/Exercise/CreateExerciseForm";
 
 type MuscleGroup =
+  | ""
   | "legs"
   | "chest"
   | "back"
@@ -13,11 +14,12 @@ type MuscleGroup =
   | "arms"
   | "core"
   | "other";
-type Difficulty = "beginner" | "intermediate" | "advanced";
-type Equipment = "bodyweight" | "basic_gym" | "full_gym";
+type Difficulty = "" | "beginner" | "intermediate" | "advanced";
+type Equipment = "" | "bodyweight" | "basic_gym" | "full_gym";
 
 interface Filters {
   muscle_group:
+    | ""
     | "legs"
     | "chest"
     | "back"
@@ -25,12 +27,13 @@ interface Filters {
     | "arms"
     | "core"
     | "other";
-  equipment: "bodyweight" | "basic_gym" | "full_gym";
-  difficulty: "beginner" | "intermediate" | "advanced";
-  movement_pattern: "squat" | "hinge" | "horizontal_push" | string;
+  equipment: "" | "bodyweight" | "basic_gym" | "full_gym";
+  difficulty: "" | "beginner" | "intermediate" | "advanced";
+  movement_pattern: "" | "squat" | "hinge" | "horizontal_push" | string;
 }
 
 const muscleGroups: MuscleGroup[] = [
+  "",
   "legs",
   "chest",
   "back",
@@ -39,14 +42,14 @@ const muscleGroups: MuscleGroup[] = [
   "core",
   "other",
 ];
-const difficulties: Difficulty[] = ["beginner", "intermediate", "advanced"];
-const equipments: Equipment[] = ["bodyweight", "basic_gym", "full_gym"];
+const difficulties: Difficulty[] = ["", "beginner", "intermediate", "advanced"];
+const equipments: Equipment[] = ["", "bodyweight", "basic_gym", "full_gym"];
 
 export default function Exercises() {
   const defaultFilters: Filters = {
-    muscle_group: "legs",
-    equipment: "bodyweight",
-    difficulty: "beginner",
+    muscle_group: "",
+    equipment: "",
+    difficulty: "",
     movement_pattern: "",
   };
 
@@ -75,13 +78,13 @@ export default function Exercises() {
 
   return (
     <div className="flex min-h-screen flex-col bg-linear-to-br from-blue-50 via-white to-blue-100 px-4 sm:px-8 py-8 text-gray-900">
-      <div className="flex items-center justify-between mb-10 max-w-[1200px] mx-auto w-full">
+      <div className="flex flex-col sm:flex-row items-center justify-between mb-10 max-w-[1200px] mx-auto w-full space-y-5">
         <h1 className="text-3xl sm:text-5xl font-extrabold text-blue-900 drop-shadow-sm">
           🏋️ Exercise Explorer
         </h1>
         <button
           onClick={() => setOpenModal(true)}
-          className="px-6 py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+          className="px-6 py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition w-full sm:w-auto"
         >
           + Create Exercise
         </button>
