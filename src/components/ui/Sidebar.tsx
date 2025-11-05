@@ -3,10 +3,10 @@ import {
   Home,
   NotebookPen,
   User,
-  Settings,
   X,
   Dumbbell,
   LogOut,
+  UtensilsCrossed,
 } from "lucide-react";
 import Cookies from "js-cookie";
 
@@ -19,8 +19,8 @@ const navItems = [
   { name: "Dashboard", path: "/dashboard", icon: Home },
   { name: "Plans", path: "/plans", icon: NotebookPen },
   { name: "Exercises", path: "/exercises", icon: Dumbbell },
+  { name: "Nutritions", path: "/nutritions", icon: UtensilsCrossed },
   { name: "Profile", path: "/profile", icon: User },
-  { name: "Settings", path: "/settings", icon: Settings },
 ];
 
 const Sidebar = ({ open, onClose }: Props) => {

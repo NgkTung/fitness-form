@@ -12,6 +12,7 @@ import FitnessOnboarding from "../pages/FitnessOnboarding";
 import Profile from "../pages/Profile";
 import Exercises from "../pages/Exercises";
 import Plans from "../pages/Plans";
+import Nutritions from "../pages/Nutritions";
 
 const AppRouter = () => {
   return (
@@ -60,6 +61,7 @@ const AppRouter = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/exercises" element={<Exercises />} />
           <Route path="/plans" element={<Plans />} />
+          <Route path="/nutritions" element={<Nutritions />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<Dashboard />} />
         </Route>

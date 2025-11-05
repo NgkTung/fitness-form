@@ -54,7 +54,7 @@ export default function PlanCard({
   return (
     <>
       {alert && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[9999] w-[90%] max-w-md animate-fade-in">
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-9999 w-[90%] max-w-md animate-fade-in">
           <Alert type={alert.type} text={alert.text} />
         </div>
       )}

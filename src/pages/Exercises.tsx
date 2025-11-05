@@ -243,10 +243,18 @@ export default function Exercises() {
 
       {/* Create Exercise Modal */}
       <Modal open={openModal} onClose={() => setOpenModal(false)}>
-        <h2 className="text-2xl font-bold mb-4 text-blue-900">
-          Create Exercise
-        </h2>
-        <CreateExerciseForm onSuccess={() => setOpenModal(false)} />
+        <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4 p-6 relative">
+          <h2 className="text-2xl font-bold mb-4 text-blue-900">
+            Create Exercise
+          </h2>
+          <CreateExerciseForm onSuccess={() => setOpenModal(false)} />
+          <button
+            onClick={() => setOpenModal(false)}
+            className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition"
+          >
+            ✕
+          </button>
+        </div>
       </Modal>
     </div>
   );
