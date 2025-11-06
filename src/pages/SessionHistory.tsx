@@ -45,7 +45,7 @@ export default function SessionHistory() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-50 via-white to-blue-100 text-center text-gray-500">
         <p className="text-xl">No sessions logged yet.</p>
-        <Link to="/plans" className="mt-4">
+        <Link to="/start-workout" className="mt-4">
           <button className="px-6 py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
             Start your first workout
           </button>
@@ -60,7 +60,7 @@ export default function SessionHistory() {
         <h1 className="text-3xl sm:text-5xl font-extrabold text-blue-900 drop-shadow-sm">
           🏋️‍♂️ Session Logs
         </h1>
-        <Link to={"/plans"}>
+        <Link to={"/start-workout"}>
           <button className="px-6 py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition w-full sm:w-auto">
             Start Workout
           </button>
