@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Dumbbell } from "lucide-react";
+import { Dumbbell, X } from "lucide-react";
 import Modal from "../common/Modal";
 import Alert from "../common/Alert";
 import type { PlanExercise } from "../../types/plan.type";
@@ -94,8 +94,12 @@ export default function PlanCard({
         </div>
       </div>
 
-      <Modal open={open} onClose={() => setOpen(false)}>
-        <div className="max-h-[80vh] overflow-y-auto px-1">
+      <Modal open={open}>
+        <div className="max-h-[80vh] overflow-y-auto bg-white p-10 rounded-lg relative">
+          <X
+            onClick={() => setOpen(false)}
+            className="absolute right-5 top-5"
+          />
           <div className="flex items-center gap-3 mb-5">
             <div className="bg-blue-100 p-3 rounded-full">
               <Dumbbell className="w-6 h-6 text-blue-500" />

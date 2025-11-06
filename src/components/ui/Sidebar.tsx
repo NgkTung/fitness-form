@@ -7,6 +7,7 @@ import {
   Dumbbell,
   LogOut,
   UtensilsCrossed,
+  ClipboardClock,
 } from "lucide-react";
 import Cookies from "js-cookie";
 
@@ -17,6 +18,7 @@ type Props = {
 
 const navItems = [
   { name: "Dashboard", path: "/dashboard", icon: Home },
+  { name: "Sessions", path: "/sessions", icon: ClipboardClock },
   { name: "Plans", path: "/plans", icon: NotebookPen },
   { name: "Exercises", path: "/exercises", icon: Dumbbell },
   { name: "Nutritions", path: "/nutritions", icon: UtensilsCrossed },

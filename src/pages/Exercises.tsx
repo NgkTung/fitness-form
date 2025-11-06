@@ -242,7 +242,7 @@ export default function Exercises() {
       )}
 
       {/* Create Exercise Modal */}
-      <Modal open={openModal} onClose={() => setOpenModal(false)}>
+      <Modal open={openModal}>
         <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4 p-6 relative">
           <h2 className="text-2xl font-bold mb-4 text-blue-900">
             Create Exercise

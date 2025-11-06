@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useExercises } from "../../hooks/exercise/useExercise";
 import Modal from "../common/Modal";
+import { X } from "lucide-react";
 
 type MuscleGroup =
   | ""
@@ -72,8 +73,9 @@ export default function CreatePlanForm({ isOpen, onClose }: Props) {
     ) || [];
 
   return (
-    <Modal open={isOpen} onClose={onClose}>
-      <div className="max-w-6xl w-full max-h-[80vh] overflow-y-auto bg-gray-50 border border-gray-200 rounded-2xl p-8 shadow-2xl space-y-8">
+    <Modal open={isOpen}>
+      <div className="max-w-6xl w-full max-h-[80vh] overflow-y-auto bg-gray-50 border border-gray-200 rounded-2xl p-8 shadow-2xl space-y-8 relative">
+        <X onClick={onClose} className="absolute top-5 right-5" />
         {/* Filters */}
         <div className="flex flex-wrap gap-5 justify-center mb-6 w-full">
           <div className="flex flex-col w-full sm:w-44">

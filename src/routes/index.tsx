@@ -13,6 +13,8 @@ import Profile from "../pages/Profile";
 import Exercises from "../pages/Exercises";
 import Plans from "../pages/Plans";
 import Nutritions from "../pages/Nutritions";
+import WorkoutSession from "../pages/WorkoutExercise";
+import SessionHistory from "../pages/SessionHistory";
 
 const AppRouter = () => {
   return (
@@ -59,6 +61,8 @@ const AppRouter = () => {
           }
         >
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/start-workout" element={<WorkoutSession />} />
+          <Route path="/sessions" element={<SessionHistory />} />
           <Route path="/exercises" element={<Exercises />} />
           <Route path="/plans" element={<Plans />} />
           <Route path="/nutritions" element={<Nutritions />} />
