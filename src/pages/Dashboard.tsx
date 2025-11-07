@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   ResponsiveContainer,
@@ -46,12 +46,15 @@ const Dashboard = () => {
     100
   );
 
-  useEffect(() => {
-    const stored = localStorage.getItem("fitnessUserData");
-    if (!stored && location.pathname !== "/onboarding") {
+  useLayoutEffect(() => {
+    const isNewAccount =
+      user?.height_cm === null &&
+      user.weight_kg === null &&
+      user.experience_level === null;
+    if (isNewAccount && location.pathname !== "/onboarding") {
       navigate("/onboarding", { replace: true });
     }
-  }, [navigate, location.pathname]);
+  }, [navigate, location.pathname, user]);
 
   const COLORS = ["#3b82f6", "#e5e7eb"];
   const pieData = [

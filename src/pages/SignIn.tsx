@@ -1,8 +1,10 @@
 import type React from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff } from "lucide-react";
 import { useLogin } from "../hooks/auth/useLogin";
 
 const schema = z.object({
@@ -15,6 +17,7 @@ type FormValues = z.infer<typeof schema>;
 const SignIn: React.FC = () => {
   const navigate = useNavigate();
   const { mutateAsync, isPending, isError, error } = useLogin();
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -62,13 +65,24 @@ const SignIn: React.FC = () => {
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Password
           </label>
-          <input
-            type="password"
-            {...register("password")}
-            placeholder="Enter your password"
-            aria-invalid={!!errors.password}
-            className={`${baseInput} ${errors.password ? errRing : okRing}`}
-          />
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              {...register("password")}
+              placeholder="Enter your password"
+              aria-invalid={!!errors.password}
+              className={`${baseInput} pr-10 ${
+                errors.password ? errRing : okRing
+              }`}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
           {errors.password && (
             <p className="mt-2 text-sm text-red-600">
               {errors.password.message}
@@ -86,11 +100,11 @@ const SignIn: React.FC = () => {
           type="submit"
           disabled={isPending}
           className={`w-full py-3 font-semibold rounded-xl transition-all shadow-md
-    ${
-      isPending
-        ? "bg-blue-300 text-white cursor-not-allowed shadow-none"
-        : "bg-blue-800 text-white hover:bg-blue-900"
-    }`}
+            ${
+              isPending
+                ? "bg-blue-300 text-white cursor-not-allowed shadow-none"
+                : "bg-blue-800 text-white hover:bg-blue-900"
+            }`}
         >
           {isPending ? "Signing in..." : "Sign In"}
         </button>

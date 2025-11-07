@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { usePlanDetail } from "../hooks/plan/usePlanDetail";
 import { useSaveSession } from "../hooks/session/useSaveSession";
+import { useParams } from "react-router-dom";
 
 // 🧩 Define type for a single exercise log
 type ExerciseLog = {
@@ -10,7 +11,8 @@ type ExerciseLog = {
 };
 
 export default function WorkoutSession() {
-  const { data: plan, isLoading } = usePlanDetail(3);
+  const { id } = useParams();
+  const { data: plan, isLoading } = usePlanDetail(Number(id));
   const saveMutation = useSaveSession();
 
   const [currentIndex, setCurrentIndex] = useState(0);

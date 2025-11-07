@@ -87,9 +87,17 @@ export default function FitnessOnboarding() {
   const [analyzeText, setAnalyzeText] = useState("Analyzing your data...");
 
   useEffect(() => {
-    const stored = localStorage.getItem("fitnessUserData");
-    if (stored) navigate("/dashboard");
-  }, [navigate]);
+    if (!data) return;
+    const isNewAccount =
+      data.height_cm === null &&
+      data.weight_kg === null &&
+      data.experience_level === null;
+
+    // ✅ Only redirect if it's NOT a new account and not currently onboarding
+    if (!isNewAccount && step === 0) {
+      navigate("/dashboard");
+    }
+  }, [navigate, data]);
 
   const handleChange = (key: keyof FormData, value: string | number | null) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
@@ -117,7 +125,6 @@ export default function FitnessOnboarding() {
 
   const handleSubmit = () => {
     if (!validateStep()) return;
-    localStorage.setItem("fitnessUserData", JSON.stringify(formData));
     updateMutation.mutate(formData);
     setStep(10);
 

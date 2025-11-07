@@ -61,7 +61,7 @@ const AppRouter = () => {
           }
         >
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/start-workout" element={<WorkoutSession />} />
+          <Route path="/start-workout/:id" element={<WorkoutSession />} />
           <Route path="/sessions" element={<SessionHistory />} />
           <Route path="/exercises" element={<Exercises />} />
           <Route path="/plans" element={<Plans />} />

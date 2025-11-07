@@ -65,6 +65,8 @@ export default function Plans() {
             <div className="grid md:grid-cols-2 gap-3">
               {myPlans?.map((plan) => (
                 <PlanCard
+                  key={plan.id}
+                  planId={plan.id}
                   name={plan.name}
                   description={plan.description}
                   plan_exercises={plan.plan_exercises}
