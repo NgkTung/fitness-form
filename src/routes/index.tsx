@@ -15,6 +15,7 @@ import Plans from "../pages/Plans";
 import Nutritions from "../pages/Nutritions";
 import WorkoutSession from "../pages/WorkoutExercise";
 import SessionHistory from "../pages/SessionHistory";
+import CreatePlan from "../pages/CreatePlan";
 
 const AppRouter = () => {
   return (
@@ -65,6 +66,7 @@ const AppRouter = () => {
           <Route path="/sessions" element={<SessionHistory />} />
           <Route path="/exercises" element={<Exercises />} />
           <Route path="/plans" element={<Plans />} />
+          <Route path="/create-plan" element={<CreatePlan />} />
           <Route path="/nutritions" element={<Nutritions />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<Dashboard />} />

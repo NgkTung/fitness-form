@@ -14,5 +14,5 @@ export const getPlanDetail = async (id: number): Promise<Plan> => {
 };
 
 export const savePlan = async (plan: Plan): Promise<Plan> => {
-  return await request.post("/plans", plan);
+  return await request.post("/plans/", plan);
 };

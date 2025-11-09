@@ -6,7 +6,7 @@ export function useSavePlan() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: Plan) => savePlan(data),
+    mutationFn: async (data: Plan) => savePlan(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["plan-me"] });
     },

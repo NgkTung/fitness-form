@@ -1,16 +1,18 @@
 export interface PlanExercise {
-  id: number;
+  id?: number;
   exercise_id: number;
-  exercise_name: string;
+  exercise_name?: string;
+  description?: string;
+  video_url: string;
   sets: number;
   reps: string;
-  day_number: number;
+  day_number?: number;
 }
 
 export interface Plan {
   id?: number;
   name: string;
   description: string;
-  schedule: string | null;
+  schedule?: string | null;
   plan_exercises: PlanExercise[];
 }

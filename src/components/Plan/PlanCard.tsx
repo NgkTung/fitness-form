@@ -12,6 +12,7 @@ interface Props {
   plan_exercises: PlanExercise[];
   planId?: number;
   save?: boolean;
+  start?: boolean;
 }
 
 export default function PlanCard({
@@ -20,6 +21,7 @@ export default function PlanCard({
   plan_exercises,
   planId,
   save = false,
+  start = false,
 }: Props) {
   const [open, setOpen] = useState(false);
   const [alert, setAlert] = useState<{
@@ -30,7 +32,11 @@ export default function PlanCard({
   const saveMutation = useSavePlan();
 
   const days = Array.from(
-    new Set(plan_exercises.map((ex) => ex.day_number))
+    new Set(
+      plan_exercises
+        .map((ex) => ex.day_number)
+        .filter((n): n is number => n !== undefined)
+    )
   ).sort((a, b) => a - b);
 
   const handleSavePlan = () => {
@@ -57,7 +63,7 @@ export default function PlanCard({
   return (
     <>
       {alert && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[9999] w-[90%] max-w-md animate-fade-in">
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-9999 w-[90%] max-w-md animate-fade-in">
           <Alert type={alert.type} text={alert.text} />
         </div>
       )}
@@ -99,59 +105,65 @@ export default function PlanCard({
             )}
           </div>
 
-          <Link to={`/start-workout/${planId}`}>
-            <button className="bg-indigo-500 text-white text-sm font-medium py-2 px-4 rounded-xl hover:bg-indigo-600 transition">
-              Start Workout
-            </button>
-          </Link>
+          {start && (
+            <Link to={`/start-workout/${planId}`}>
+              <button className="bg-indigo-500 text-white text-sm font-medium py-2 px-4 rounded-xl hover:bg-indigo-600 transition">
+                Start Workout
+              </button>
+            </Link>
+          )}
         </div>
       </div>
 
       <Modal open={open}>
-        <div className="max-h-[80vh] overflow-y-auto bg-white p-10 rounded-lg relative">
+        <div className="bg-white p-10 rounded-lg relative">
           <X
             onClick={() => setOpen(false)}
             className="absolute right-5 top-5 cursor-pointer"
           />
-          <div className="flex items-center gap-3 mb-5">
-            <div className="bg-blue-100 p-3 rounded-full">
-              <Dumbbell className="w-6 h-6 text-blue-500" />
+          <div className="max-h-[80vh] overflow-y-auto">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="bg-blue-100 p-3 rounded-full">
+                <Dumbbell className="w-6 h-6 text-blue-500" />
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold text-gray-900">{name}</h2>
+                <p className="text-gray-500 text-sm">{description}</p>
+              </div>
             </div>
-            <div>
-              <h2 className="text-xl font-semibold text-gray-900">{name}</h2>
-              <p className="text-gray-500 text-sm">{description}</p>
-            </div>
-          </div>
 
-          <div className="space-y-6">
-            {days.map((day) => {
-              const exercises = plan_exercises.filter(
-                (ex) => ex.day_number === day
-              );
-              return (
-                <div
-                  key={day}
-                  className="bg-blue-50 border border-blue-100 rounded-xl p-4"
-                >
-                  <h3 className="text-md font-semibold text-blue-600 mb-3">
-                    Day {day}
-                  </h3>
-                  <ul className="space-y-2">
-                    {exercises.map((ex) => (
-                      <li
-                        key={ex.exercise_id}
-                        className="flex justify-between items-center border-b border-blue-100/80 pb-2"
-                      >
-                        <span className="font-medium">{ex.exercise_name}</span>
-                        <span className="text-sm text-gray-500">
-                          {ex.sets} sets × {ex.reps} reps
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            })}
+            <div className="space-y-6">
+              {days.map((day) => {
+                const exercises = plan_exercises.filter(
+                  (ex) => ex.day_number === day
+                );
+                return (
+                  <div
+                    key={day}
+                    className="bg-blue-50 border border-blue-100 rounded-xl p-4"
+                  >
+                    <h3 className="text-md font-semibold text-blue-600 mb-3">
+                      Day {day}
+                    </h3>
+                    <ul className="space-y-2">
+                      {exercises.map((ex) => (
+                        <li
+                          key={ex.exercise_id}
+                          className="flex justify-between items-center border-b border-blue-100/80 pb-2"
+                        >
+                          <span className="font-medium">
+                            {ex.exercise_name}
+                          </span>
+                          <span className="text-sm text-gray-500">
+                            {ex.sets} sets × {ex.reps} reps
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </Modal>

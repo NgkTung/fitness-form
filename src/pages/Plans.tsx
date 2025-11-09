@@ -4,6 +4,7 @@ import PlanCard from "../components/Plan/PlanCard";
 import { useMyPlans } from "../hooks/plan/useMyPlans";
 import { usePlanSuggestion } from "../hooks/plan/usePlanSuggestion";
 import { Loader2 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Plans() {
   const { data: suggestionPlans, isLoading: suggestionPlansLoading } =
@@ -23,12 +24,11 @@ export default function Plans() {
             <h2 className="font-bold text-lg sm:text-2xl">
               Suggestion plans for you:
             </h2>
-            <button
-              onClick={() => setOpenForm(true)}
-              className="text-white bg-blue-500 font-semibold text-lg py-2 px-6 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out"
-            >
-              Create your own plan
-            </button>
+            <Link to={"/create-plan"}>
+              <button className="text-white bg-blue-500 font-semibold text-lg py-2 px-6 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out">
+                Create your own plan
+              </button>
+            </Link>
           </div>
           {suggestionPlansLoading ? (
             <div className="flex flex-col items-center gap-3">
@@ -70,6 +70,7 @@ export default function Plans() {
                   name={plan.name}
                   description={plan.description}
                   plan_exercises={plan.plan_exercises}
+                  start
                 />
               ))}
             </div>

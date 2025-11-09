@@ -16,3 +16,14 @@ export interface MealLog {
   fat_g: number;
   log_date: string;
 }
+
+export interface Hydration {
+  water_ml: number;
+}
+
+export interface HydrationLog {
+  id: number;
+  user_id: number;
+  water_ml: number;
+  log_time: string;
+}
