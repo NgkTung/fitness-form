@@ -7,6 +7,7 @@ export interface PlanExercise {
   sets: number;
   reps: string;
   day_number?: number;
+  rest_time?: number;
 }
 
 export interface Plan {
