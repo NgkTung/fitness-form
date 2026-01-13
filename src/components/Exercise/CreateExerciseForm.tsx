@@ -46,15 +46,15 @@ export default function CreateExerciseForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-      {/* Name */}
+      {/* Tên bài tập */}
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-1">
-          Exercise Name *
+          Tên bài tập *
         </label>
         <input
           type="text"
-          {...register("name", { required: "Exercise name is required" })}
-          placeholder="Enter exercise name"
+          {...register("name", { required: "Vui lòng nhập tên bài tập" })}
+          placeholder="Nhập tên bài tập"
           className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 outline-none"
         />
         {errors.name && (
@@ -62,14 +62,14 @@ export default function CreateExerciseForm({
         )}
       </div>
 
-      {/* Description */}
+      {/* Mô tả */}
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-1">
-          Description *
+          Mô tả *
         </label>
         <textarea
-          {...register("description", { required: "Description is required" })}
-          placeholder="Enter detailed description"
+          {...register("description", { required: "Vui lòng nhập mô tả" })}
+          placeholder="Nhập mô tả chi tiết"
           className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 outline-none min-h-[100px]"
         />
         {errors.description && (
@@ -79,15 +79,18 @@ export default function CreateExerciseForm({
         )}
       </div>
 
-      {/* Video URL */}
+      {/* Đường dẫn Video */}
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-1">
-          Video URL
+          Đường dẫn Video (URL)
         </label>
         <input
           type="url"
           {...register("video_url", {
-            pattern: { value: /^https?:\/\/.+/, message: "Invalid URL format" },
+            pattern: {
+              value: /^https?:\/\/.+/,
+              message: "Định dạng URL không hợp lệ",
+            },
           })}
           placeholder="https://www.youtube.com/watch?v=..."
           className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 outline-none"
@@ -99,107 +102,109 @@ export default function CreateExerciseForm({
         )}
       </div>
 
-      {/* Grid fields */}
+      {/* Các trường dạng lưới */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {/* Muscle Group */}
+        {/* Nhóm cơ */}
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Muscle Group *
+            Nhóm cơ *
           </label>
           <select
             {...register("muscle_group", { required: true })}
             className="w-full px-4 py-2 border border-gray-300 rounded-xl"
           >
             {[
-              "legs",
-              "chest",
-              "back",
-              "shoulders",
-              "arms",
-              "core",
-              "other",
+              { val: "legs", label: "Chân" },
+              { val: "chest", label: "Ngực" },
+              { val: "back", label: "Lưng" },
+              { val: "shoulders", label: "Vai" },
+              { val: "arms", label: "Tay" },
+              { val: "core", label: "Cơ bụng/lõi" },
+              { val: "other", label: "Khác" },
             ].map((m) => (
-              <option key={m} value={m}>
-                {m.charAt(0).toUpperCase() + m.slice(1)}
+              <option key={m.val} value={m.val}>
+                {m.label}
               </option>
             ))}
           </select>
         </div>
 
-        {/* Difficulty */}
+        {/* Độ khó */}
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Difficulty *
+            Độ khó *
           </label>
           <select
             {...register("difficulty", { required: true })}
             className="w-full px-4 py-2 border border-gray-300 rounded-xl"
           >
-            {["beginner", "intermediate", "advanced"].map((d) => (
-              <option key={d} value={d}>
-                {d.charAt(0).toUpperCase() + d.slice(1)}
+            {[
+              { val: "beginner", label: "Mới bắt đầu" },
+              { val: "intermediate", label: "Trung cấp" },
+              { val: "advanced", label: "Nâng cao" },
+            ].map((d) => (
+              <option key={d.val} value={d.val}>
+                {d.label}
               </option>
             ))}
           </select>
         </div>
 
-        {/* Equipment */}
+        {/* Thiết bị */}
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Equipment *
+            Thiết bị *
           </label>
           <select
             {...register("equipment", { required: true })}
             className="w-full px-4 py-2 border border-gray-300 rounded-xl"
           >
-            {["bodyweight", "basic_gym", "full_gym"].map((e) => (
-              <option key={e} value={e}>
-                {e
-                  .split("_")
-                  .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-                  .join(" ")}
+            {[
+              { val: "bodyweight", label: "Trọng lượng cơ thể" },
+              { val: "basic_gym", label: "Phòng tập cơ bản" },
+              { val: "full_gym", label: "Phòng tập đầy đủ" },
+            ].map((e) => (
+              <option key={e.val} value={e.val}>
+                {e.label}
               </option>
             ))}
           </select>
         </div>
 
-        {/* Movement Pattern */}
+        {/* Dạng chuyển động */}
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Movement Pattern *
+            Dạng chuyển động *
           </label>
           <select
             {...register("movement_pattern", { required: true })}
             className="w-full px-4 py-2 border border-gray-300 rounded-xl"
           >
             {[
-              "squat",
-              "hinge",
-              "horizontal_push",
-              "vertical_pull",
-              "vertical_push",
-              "carry",
-              "rotation",
-              "other",
+              { val: "squat", label: "Squat (Ngồi xổm)" },
+              { val: "hinge", label: "Hinge (Gập hông)" },
+              { val: "horizontal_push", label: "Đẩy ngang" },
+              { val: "vertical_pull", label: "Kéo dọc" },
+              { val: "vertical_push", label: "Đẩy dọc" },
+              { val: "carry", label: "Mang vác" },
+              { val: "rotation", label: "Xoay người" },
+              { val: "other", label: "Khác" },
             ].map((m) => (
-              <option key={m} value={m}>
-                {m
-                  .split("_")
-                  .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-                  .join(" ")}
+              <option key={m.val} value={m.val}>
+                {m.label}
               </option>
             ))}
           </select>
         </div>
       </div>
 
-      {/* Submit */}
+      {/* Nút Gửi */}
       <button
         type="submit"
         disabled={createMutation.isPending}
         className="w-full py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition disabled:opacity-60"
       >
-        {createMutation.isPending ? "Saving..." : "Save Exercise"}
+        {createMutation.isPending ? "Đang lưu..." : "Lưu bài tập"}
       </button>
     </form>
   );

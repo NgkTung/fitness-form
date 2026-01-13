@@ -38,25 +38,28 @@ export default function AddNutritionForm({ isOpen, onClose }: Props) {
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-w-md bg-white rounded-2xl shadow-md p-6 space-y-4 relative"
       >
-        <X onClick={onClose} className="absolute top-5 right-5" />
+        <X
+          onClick={onClose}
+          className="absolute top-5 right-5 cursor-pointer"
+        />
         <h2 className="text-xl font-bold text-blue-700 mb-4">
-          Add Nutrition Log
+          Thêm nhật ký dinh dưỡng
         </h2>
 
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Food Name
+            Tên thực phẩm
           </label>
           <input
             {...register("food_name", {
-              required: "Food name is required",
+              required: "Vui lòng nhập tên thực phẩm",
               minLength: {
                 value: 2,
-                message: "Name must be at least 2 characters",
+                message: "Tên phải có ít nhất 2 ký tự",
               },
             })}
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
-            placeholder="e.g. Chicken Breast"
+            placeholder="Ví dụ: Ức gà"
           />
           {errors.food_name && (
             <p className="text-red-500 text-sm mt-1">
@@ -68,15 +71,15 @@ export default function AddNutritionForm({ isOpen, onClose }: Props) {
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">
-              Calories (kcal)
+              Năng lượng (kcal)
             </label>
             <input
               type="number"
               step="any"
               {...register("calories", {
-                required: "Calories are required",
+                required: "Vui lòng nhập calo",
                 valueAsNumber: true,
-                min: { value: 1, message: "Calories must be greater than 0" },
+                min: { value: 1, message: "Calo phải lớn hơn 0" },
               })}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
               placeholder="450"
@@ -90,15 +93,15 @@ export default function AddNutritionForm({ isOpen, onClose }: Props) {
 
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">
-              Protein (g)
+              Đạm/Protein (g)
             </label>
             <input
               type="number"
               step="any"
               {...register("protein_g", {
-                required: "Protein is required",
+                required: "Vui lòng nhập protein",
                 valueAsNumber: true,
-                min: { value: 0, message: "Protein cannot be negative" },
+                min: { value: 0, message: "Protein không thể âm" },
               })}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
               placeholder="35.5"
@@ -112,15 +115,15 @@ export default function AddNutritionForm({ isOpen, onClose }: Props) {
 
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">
-              Carbs (g)
+              Tinh bột/Carbs (g)
             </label>
             <input
               type="number"
               step="any"
               {...register("carbs_g", {
-                required: "Carbs are required",
+                required: "Vui lòng nhập carbs",
                 valueAsNumber: true,
-                min: { value: 0, message: "Carbs cannot be negative" },
+                min: { value: 0, message: "Carbs không thể âm" },
               })}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
               placeholder="50.0"
@@ -134,15 +137,15 @@ export default function AddNutritionForm({ isOpen, onClose }: Props) {
 
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">
-              Fat (g)
+              Chất béo/Fat (g)
             </label>
             <input
               type="number"
               step="any"
               {...register("fat_g", {
-                required: "Fat is required",
+                required: "Vui lòng nhập chất béo",
                 valueAsNumber: true,
-                min: { value: 0, message: "Fat cannot be negative" },
+                min: { value: 0, message: "Chất béo không thể âm" },
               })}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
               placeholder="10.2"
@@ -166,11 +169,11 @@ export default function AddNutritionForm({ isOpen, onClose }: Props) {
         >
           {addMutation.isPending ? (
             <>
-              <Loader2 className="animate-spin w-5 h-5" /> Saving...
+              <Loader2 className="animate-spin w-5 h-5" /> Đang lưu...
             </>
           ) : (
             <>
-              <PlusCircle size={18} /> Add Log
+              <PlusCircle size={18} /> Thêm nhật ký
             </>
           )}
         </button>

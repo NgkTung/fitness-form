@@ -55,11 +55,11 @@ const ProfilePage = () => {
   }, [formData, originalData]);
 
   const weightData = [
-    { day: "Oct 10", weight: 73.5 },
-    { day: "Oct 20", weight: 73.1 },
-    { day: "Oct 30", weight: 72.8 },
-    { day: "Nov 10", weight: 72.5 },
-    { day: "Nov 20", weight: 72.3 },
+    { day: "10 Th10", weight: 73.5 },
+    { day: "20 Th10", weight: 73.1 },
+    { day: "30 Th10", weight: 72.8 },
+    { day: "10 Th11", weight: 72.5 },
+    { day: "20 Th11", weight: 72.3 },
   ];
 
   const handleChange = (
@@ -82,13 +82,13 @@ const ProfilePage = () => {
     e.preventDefault();
     updateMutation.mutate(formData, {
       onSuccess: () => {
-        setAlert({ type: "success", text: "Profile updated successfully!" });
+        setAlert({ type: "success", text: "Hồ sơ cập nhật thành công!" });
         setOriginalData(formData);
         refetch();
         setTimeout(() => setAlert(null), 4000);
       },
       onError: () => {
-        setAlert({ type: "error", text: "Failed to update profile." });
+        setAlert({ type: "error", text: "Lỗi khi cập nhật hồ sơ của bạn." });
         setTimeout(() => setAlert(null), 4000);
       },
     });
@@ -106,7 +106,7 @@ const ProfilePage = () => {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 via-white to-blue-100 text-blue-700">
         <div className="flex flex-col items-center gap-3">
           <RefreshCw className="animate-spin" size={36} />
-          <p className="font-semibold text-lg">Loading your profile...</p>
+          <p className="font-semibold text-lg">Đang tải hồ sơ của bạn...</p>
         </div>
       </div>
     );
@@ -116,13 +116,13 @@ const ProfilePage = () => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-red-50 via-white to-red-100 text-red-700">
         <AlertCircle size={40} className="mb-3" />
-        <p className="font-semibold text-lg mb-2">Failed to load profile</p>
+        <p className="font-semibold text-lg mb-2">Lỗi khi tải hồ sơ</p>
         <button
           onClick={() => refetch()}
           className="flex items-center gap-2 px-5 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-xl transition"
         >
           <RefreshCw size={18} className="animate-spin-slow" />
-          Retry
+          Thử lại
         </button>
       </div>
     );
@@ -139,15 +139,15 @@ const ProfilePage = () => {
       <div className="max-w-[1800px] mx-auto grid grid-cols-1 xl:grid-cols-3 gap-10">
         <div className="xl:col-span-2 bg-white/90 shadow-md border border-blue-100 rounded-3xl p-10 backdrop-blur-md">
           <h1 className="text-3xl font-bold text-blue-800 mb-8 text-center">
-            My Fitness Profile
+            Hồ sơ cá nhân
           </h1>
 
           <form onSubmit={handleSubmit} className="space-y-10">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {[
-                { label: "Height (cm)", name: "height_cm", type: "number" },
-                { label: "Weight (kg)", name: "weight_kg", type: "number" },
-                { label: "Age", name: "age", type: "number" },
+                { label: "Chiều cao (cm)", name: "height_cm", type: "number" },
+                { label: "Cân nặng (kg)", name: "weight_kg", type: "number" },
+                { label: "Tuổi", name: "age", type: "number" },
               ].map((f) => (
                 <div key={f.name}>
                   <label className="block text-sm font-semibold text-gray-700 mb-1">
@@ -165,7 +165,7 @@ const ProfilePage = () => {
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1">
-                  Gender
+                  Giới tính
                 </label>
                 <select
                   name="gender"
@@ -173,15 +173,15 @@ const ProfilePage = () => {
                   onChange={handleChange}
                   className="w-full rounded-xl border border-blue-100 px-4 py-2.5 bg-white text-gray-800 focus:ring-2 focus:ring-blue-400 focus:border-blue-300"
                 >
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="other">Other</option>
+                  <option value="male">Nam</option>
+                  <option value="female">Nữ</option>
+                  <option value="other">Khác</option>
                 </select>
               </div>
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1">
-                  Activity Level
+                  Mức độ hoạt động
                 </label>
                 <select
                   name="activity_level"
@@ -189,18 +189,18 @@ const ProfilePage = () => {
                   onChange={handleChange}
                   className="w-full rounded-xl border border-blue-100 px-4 py-2.5 bg-white text-gray-800 focus:ring-2 focus:ring-blue-400 focus:border-blue-300"
                 >
-                  <option value="">Select Activity Level</option>
-                  <option value="sedentary">Sedentary</option>
-                  <option value="light">Light</option>
-                  <option value="moderate">Moderate</option>
-                  <option value="active">Active</option>
-                  <option value="very_active">Very Active</option>
+                  <option value="">Chọn mức độ hoạt động</option>
+                  <option value="sedentary">Ít vận động</option>
+                  <option value="light">Vận động nhẹ</option>
+                  <option value="moderate">Vận động vừa phải</option>
+                  <option value="active">Năng động</option>
+                  <option value="very_active">Rất năng động</option>
                 </select>
               </div>
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1">
-                  Main Goal
+                  Mục tiêu chính
                 </label>
                 <select
                   name="main_goal"
@@ -208,15 +208,15 @@ const ProfilePage = () => {
                   onChange={handleChange}
                   className="w-full rounded-xl border border-blue-100 px-4 py-2.5 bg-white text-gray-800 focus:ring-2 focus:ring-blue-400 focus:border-blue-300"
                 >
-                  <option value="build_muscle">Build Muscle</option>
-                  <option value="lose_weight">Lose Weight</option>
-                  <option value="maintain">Maintain</option>
+                  <option value="build_muscle">Tăng cơ</option>
+                  <option value="lose_weight">Giảm cân</option>
+                  <option value="maintain">Duy trì vóc dáng</option>
                 </select>
               </div>
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1">
-                  Experience Level
+                  Trình độ kinh nghiệm
                 </label>
                 <select
                   name="experience_level"
@@ -224,15 +224,15 @@ const ProfilePage = () => {
                   onChange={handleChange}
                   className="w-full rounded-xl border border-blue-100 px-4 py-2.5 bg-white text-gray-800 focus:ring-2 focus:ring-blue-400 focus:border-blue-300"
                 >
-                  <option value="beginner">Beginner</option>
-                  <option value="intermediate">Intermediate</option>
-                  <option value="advanced">Advanced</option>
+                  <option value="beginner">Người mới bắt đầu</option>
+                  <option value="intermediate">Trung cấp</option>
+                  <option value="advanced">Nâng cao</option>
                 </select>
               </div>
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1">
-                  Workout Days / Week
+                  Số buổi tập / Tuần
                 </label>
                 <input
                   type="number"
@@ -247,7 +247,7 @@ const ProfilePage = () => {
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1">
-                  Equipment Available
+                  Thiết bị hiện có
                 </label>
                 <select
                   name="equipment_available"
@@ -255,9 +255,9 @@ const ProfilePage = () => {
                   onChange={handleChange}
                   className="w-full rounded-xl border border-blue-100 px-4 py-2.5 bg-white text-gray-800 focus:ring-2 focus:ring-blue-400 focus:border-blue-300"
                 >
-                  <option value="bodyweight">Bodyweight</option>
-                  <option value="basic_gym">Basic Gym</option>
-                  <option value="full_gym">Full Gym</option>
+                  <option value="bodyweight">Trọng lượng cơ thể</option>
+                  <option value="basic_gym">Phòng tập cơ bản</option>
+                  <option value="full_gym">Phòng tập đầy đủ</option>
                 </select>
               </div>
             </div>
@@ -273,7 +273,7 @@ const ProfilePage = () => {
                 }`}
               >
                 <Save size={18} />
-                {updateMutation.isPending ? "Saving..." : "Save Changes"}
+                {updateMutation.isPending ? "Đang lưu..." : "Lưu thay đổi"}
               </button>
             </div>
           </form>
@@ -282,7 +282,7 @@ const ProfilePage = () => {
         <div className="space-y-8">
           <div className="bg-white/90 p-6 rounded-3xl border border-blue-100 shadow-md backdrop-blur-md">
             <h2 className="text-xl font-semibold text-blue-800 mb-4">
-              Weight Trend
+              Xu hướng cân nặng
             </h2>
             <ResponsiveContainer width="100%" height={220}>
               <LineChart data={weightData}>
@@ -303,42 +303,54 @@ const ProfilePage = () => {
 
           <div className="bg-white/90 p-6 rounded-3xl border border-blue-100 shadow-md text-center">
             <h2 className="text-xl font-semibold text-blue-800 mb-4">
-              BMI Overview
+              Tổng quan BMI
             </h2>
             <p className="text-5xl font-bold text-green-600 mb-1">{bmi}</p>
             <p className="text-gray-600 text-sm">
               {Number(bmi) < 18.5
-                ? "Underweight"
+                ? "Thiếu cân"
                 : Number(bmi) < 25
-                ? "Normal"
+                ? "Bình thường"
                 : Number(bmi) < 30
-                ? "Overweight"
-                : "Obese"}
+                ? "Thừa cân"
+                : "Béo phì"}
             </p>
             <p className="mt-3 text-xs text-blue-500">
-              18.5 - 25 = Normal Range
+              18.5 - 25 = Ngưỡng bình thường
             </p>
           </div>
 
           <div className="bg-white/90 p-6 rounded-3xl border border-blue-100 shadow-md">
             <h2 className="text-xl font-semibold text-blue-800 mb-4">
-              Training Summary
+              Tóm tắt luyện tập
             </h2>
             <ul className="space-y-2 text-gray-700 text-sm">
               <li>
-                <strong>Goal:</strong>{" "}
-                {formData.main_goal?.replace("_", " ").toUpperCase()}
+                <strong>Mục tiêu:</strong>{" "}
+                {formData.main_goal === "build_muscle"
+                  ? "TĂNG CƠ"
+                  : formData.main_goal === "lose_weight"
+                  ? "GIẢM CÂN"
+                  : "DUY TRÌ"}
               </li>
               <li>
-                <strong>Experience:</strong>{" "}
-                {formData.experience_level?.toUpperCase()}
+                <strong>Kinh nghiệm:</strong>{" "}
+                {formData.experience_level === "beginner"
+                  ? "MỚI BẮT ĐẦU"
+                  : formData.experience_level === "intermediate"
+                  ? "TRUNG CẤP"
+                  : "NÂNG CAO"}
               </li>
               <li>
-                <strong>Days/Week:</strong> {formData.days_per_week}
+                <strong>Số buổi/Tuần:</strong> {formData.days_per_week}
               </li>
               <li>
-                <strong>Equipment:</strong>{" "}
-                {formData.equipment_available?.replace("_", " ").toUpperCase()}
+                <strong>Thiết bị:</strong>{" "}
+                {formData.equipment_available === "bodyweight"
+                  ? "TRỌNG LƯỢNG CƠ THỂ"
+                  : formData.equipment_available === "basic_gym"
+                  ? "PHÒNG TẬP CƠ BẢN"
+                  : "PHÒNG TẬP ĐẦY ĐỦ"}
               </li>
             </ul>
           </div>

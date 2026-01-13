@@ -77,14 +77,14 @@ export default function WorkoutSession() {
   if (isLoading)
     return (
       <div className="flex items-center justify-center min-h-screen text-gray-500 text-lg sm:text-xl px-4 text-center">
-        Loading your workout...
+        Đang tải buổi tập của bạn...
       </div>
     );
 
   if (!plan || !plan.plan_exercises?.length)
     return (
       <div className="flex items-center justify-center min-h-screen text-red-500 text-base sm:text-lg text-center px-4">
-        No exercises found for this plan.
+        Không tìm thấy bài tập nào cho kế hoạch này.
       </div>
     );
 
@@ -129,7 +129,7 @@ export default function WorkoutSession() {
         await saveMutation.mutateAsync(workoutData);
         setPhase("finished");
       } catch {
-        alert("Failed to save session. Please try again.");
+        alert("Không thể lưu buổi tập. Vui lòng thử lại.");
         setPhase("finished");
       }
     }
@@ -154,10 +154,10 @@ export default function WorkoutSession() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen text-gray-700 text-center px-4">
         <h2 className="text-2xl sm:text-3xl font-bold mb-3 text-blue-600">
-          Saving your session...
+          Đang lưu buổi tập của bạn...
         </h2>
         <p className="text-gray-500 text-sm sm:text-base">
-          Please wait a moment.
+          Vui lòng chờ trong giây lát.
         </p>
       </div>
     );
@@ -166,17 +166,17 @@ export default function WorkoutSession() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen text-center text-gray-800 p-6 sm:p-8">
         <h1 className="text-3xl sm:text-6xl font-bold mb-5 text-blue-700">
-          Workout Complete 🎉
+          Hoàn thành buổi tập 🎉
         </h1>
         <p className="text-base sm:text-2xl text-gray-600 mb-8 sm:mb-10 max-w-md sm:max-w-lg text-balance">
-          Congratulations! You've successfully completed your workout plan.
+          Chúc mừng! Bạn đã hoàn thành xuất sắc kế hoạch tập luyện của mình.
         </p>
         <p className="text-gray-500 text-base sm:text-lg mb-8">
-          Session saved at: {new Date().toLocaleTimeString()}
+          Buổi tập đã lưu lúc: {new Date().toLocaleTimeString()}
         </p>
         <Link to="/sessions">
           <button className="px-8 sm:px-10 py-3 sm:py-4 bg-blue-600 text-white rounded-xl text-base sm:text-lg hover:bg-blue-700 transition">
-            Check your session history
+            Kiểm tra lịch sử buổi tập
           </button>
         </Link>
       </div>
@@ -185,7 +185,7 @@ export default function WorkoutSession() {
   if (phase === "countdown")
     return (
       <div className="flex flex-col items-center justify-center min-h-screen text-gray-800 text-center px-4">
-        <h2 className="text-3xl sm:text-4xl font-semibold mb-3">Get Ready</h2>
+        <h2 className="text-3xl sm:text-4xl font-semibold mb-3">Chuẩn bị</h2>
         <h3 className="text-lg sm:text-2xl text-gray-500 mb-6 sm:mb-8">
           {currentExercise.exercise_name}
         </h3>
@@ -202,20 +202,20 @@ export default function WorkoutSession() {
           {currentExercise.exercise_name}
         </h2>
         <p className="text-lg sm:text-xl mb-1 sm:mb-2">
-          Reps: {currentExercise.reps}
+          Số lần (Reps): {currentExercise.reps}
         </p>
         <p className="text-lg sm:text-xl mb-6 sm:mb-8">
-          Sets: {currentExercise.sets}
+          Số hiệp (Sets): {currentExercise.sets}
         </p>
         <button
           onClick={handleFinish}
           disabled={saveMutation.isPending}
           className="px-10 sm:px-12 py-4 sm:py-5 bg-green-600 text-white text-xl sm:text-2xl rounded-xl hover:bg-green-700 transition disabled:opacity-50"
         >
-          {saveMutation.isPending ? "Saving..." : "Finish"}
+          {saveMutation.isPending ? "Đang lưu..." : "Hoàn thành"}
         </button>
         <p className="text-gray-500 mt-6 sm:mt-8 text-base sm:text-lg">
-          Exercise {currentIndex + 1} / {exercises.length}
+          Bài tập {currentIndex + 1} / {exercises.length}
         </p>
       </div>
     );
@@ -229,7 +229,7 @@ export default function WorkoutSession() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-50 via-white to-blue-100 text-gray-800 text-center px-4 py-8 sm:p-8">
         <h2 className="text-3xl sm:text-4xl font-bold text-blue-700 mb-4 sm:mb-6">
-          Rest Time ⏱️
+          Thời gian nghỉ ⏱️
         </h2>
 
         <div className="relative w-36 h-36 sm:w-44 sm:h-44 mb-6 sm:mb-8">
@@ -255,7 +255,7 @@ export default function WorkoutSession() {
             />
           </svg>
           <div className="absolute inset-0 flex items-center justify-center text-3xl sm:text-4xl font-bold text-blue-600">
-            {Math.ceil(breakRemaining)}s
+            {Math.ceil(breakRemaining)} giây
           </div>
         </div>
 
@@ -264,13 +264,13 @@ export default function WorkoutSession() {
             onClick={addFifteenSeconds}
             className="px-4 sm:px-6 py-2 sm:py-3 bg-gray-300 rounded-lg sm:rounded-xl text-base sm:text-lg font-medium hover:bg-gray-400 transition"
           >
-            +15s
+            +15 giây
           </button>
           <button
             onClick={() => handleStartNextExercise(false)}
             className="px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white rounded-lg sm:rounded-xl text-base sm:text-lg font-medium hover:bg-blue-700 transition"
           >
-            Start Next
+            Bắt đầu bài tiếp theo
           </button>
         </div>
 
@@ -280,15 +280,15 @@ export default function WorkoutSession() {
               {nextExercise.exercise_name}
             </h3>
             <p className="text-lg sm:text-xl text-gray-700 mb-1 sm:mb-2">
-              Reps: {nextExercise.reps}
+              Số lần (Reps): {nextExercise.reps}
             </p>
             <p className="text-lg sm:text-xl text-gray-700 mb-4 sm:mb-6">
-              Sets: {nextExercise.sets}
+              Số hiệp (Sets): {nextExercise.sets}
             </p>
             {nextExercise.description && (
               <div className="bg-white/90 border border-gray-200 shadow-md rounded-xl sm:rounded-2xl px-4 sm:px-6 py-3 sm:py-5 text-gray-700 text-sm sm:text-base max-w-md sm:max-w-2xl mb-6 sm:mb-8 mx-auto text-left">
                 <p className="text-blue-700 font-bold mb-1 sm:mb-2 text-base sm:text-lg">
-                  Tips:
+                  Mẹo tập luyện:
                 </p>
                 <p className="leading-relaxed text-wrap">
                   {nextExercise.description}
@@ -296,7 +296,7 @@ export default function WorkoutSession() {
               </div>
             )}
             <p className="text-gray-500 text-base sm:text-lg">
-              Next Exercise {currentIndex + 2} / {exercises.length}
+              Bài tập tiếp theo {currentIndex + 2} / {exercises.length}
             </p>
           </>
         )}
@@ -315,7 +315,7 @@ export default function WorkoutSession() {
 
       <div className="w-full max-w-md sm:max-w-2xl bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-lg p-5 sm:p-6 mb-8 sm:mb-10">
         <h2 className="text-xl sm:text-2xl font-bold text-blue-600 mb-3 sm:mb-4">
-          Exercises
+          Danh sách bài tập
         </h2>
         <ul className="space-y-3 sm:space-y-4 text-left">
           {plan.plan_exercises.map((ex: any, idx: number) => (
@@ -340,11 +340,11 @@ export default function WorkoutSession() {
         onClick={handleStart}
         className="px-10 sm:px-12 py-4 sm:py-5 bg-blue-600 text-white text-lg sm:text-2xl rounded-xl hover:bg-blue-700 transition"
       >
-        Start Workout
+        Bắt đầu tập luyện
       </button>
 
       <p className="text-gray-500 mt-6 sm:mt-10 text-base sm:text-lg">
-        Total Exercises: {plan.plan_exercises.length}
+        Tổng số bài tập: {plan.plan_exercises.length}
       </p>
     </div>
   );

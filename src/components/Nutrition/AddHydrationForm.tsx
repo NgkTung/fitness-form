@@ -39,20 +39,20 @@ export default function AddHydrationForm({ isOpen, onClose }: Props) {
           className="absolute top-5 right-5 cursor-pointer text-gray-600 hover:text-gray-800"
         />
         <h2 className="text-xl font-bold text-blue-700 mb-4">
-          Add Hydration Log
+          Thêm lịch sử uống nước
         </h2>
 
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Water Amount (ml)
+            Lượng nước (ml)
           </label>
           <input
             type="number"
             step="any"
             {...register("water_ml", {
-              required: "Water amount is required",
+              required: "Lượng nước là bắt buộc",
               valueAsNumber: true,
-              min: { value: 1, message: "Amount must be greater than 0" },
+              min: { value: 1, message: "Lượng nước phải lớn hơn 0" },
             })}
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
             placeholder="e.g. 250"
@@ -75,11 +75,11 @@ export default function AddHydrationForm({ isOpen, onClose }: Props) {
         >
           {addMutation.isPending ? (
             <>
-              <Loader2 className="animate-spin w-5 h-5" /> Saving...
+              <Loader2 className="animate-spin w-5 h-5" /> Đang lưu...
             </>
           ) : (
             <>
-              <PlusCircle size={18} /> Add Log
+              <PlusCircle size={18} /> Thêm lịch sử
             </>
           )}
         </button>

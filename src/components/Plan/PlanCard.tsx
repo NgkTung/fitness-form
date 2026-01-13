@@ -49,11 +49,11 @@ export default function PlanCard({
       },
       {
         onSuccess: () => {
-          setAlert({ type: "success", text: "Plan saved successfully!" });
+          setAlert({ type: "success", text: "Đã lưu kế hoạch thành công!" });
           setTimeout(() => setAlert(null), 4000);
         },
         onError: () => {
-          setAlert({ type: "error", text: "Failed to save plan." });
+          setAlert({ type: "error", text: "Lưu kế hoạch thất bại." });
           setTimeout(() => setAlert(null), 4000);
         },
       }
@@ -87,7 +87,7 @@ export default function PlanCard({
               onClick={() => setOpen(true)}
               className="bg-blue-500 text-white text-sm font-medium py-2 px-4 rounded-xl hover:bg-blue-600 transition"
             >
-              View Details
+              Xem chi tiết
             </button>
 
             {save && (
@@ -100,7 +100,7 @@ export default function PlanCard({
                     : "bg-green-500 hover:bg-green-600 text-white"
                 }`}
               >
-                {saveMutation.isPending ? "Saving..." : "Save Plan"}
+                {saveMutation.isPending ? "Đang lưu..." : "Lưu kế hoạch"}
               </button>
             )}
           </div>
@@ -108,7 +108,7 @@ export default function PlanCard({
           {start && (
             <Link to={`/start-workout/${planId}`}>
               <button className="bg-indigo-500 text-white text-sm font-medium py-2 px-4 rounded-xl hover:bg-indigo-600 transition">
-                Start Workout
+                Bắt đầu tập
               </button>
             </Link>
           )}
@@ -143,7 +143,7 @@ export default function PlanCard({
                     className="bg-blue-50 border border-blue-100 rounded-xl p-4"
                   >
                     <h3 className="text-md font-semibold text-blue-600 mb-3">
-                      Day {day}
+                      Ngày {day}
                     </h3>
                     <ul className="space-y-2">
                       {exercises.map((ex) => (
@@ -155,7 +155,7 @@ export default function PlanCard({
                             {ex.exercise_name}
                           </span>
                           <span className="text-sm text-gray-500">
-                            {ex.sets} sets × {ex.reps} reps
+                            {ex.sets} hiệp × {ex.reps} lần
                           </span>
                         </li>
                       ))}

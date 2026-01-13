@@ -17,12 +17,12 @@ type Props = {
 };
 
 const navItems = [
-  { name: "Dashboard", path: "/dashboard", icon: Home },
-  { name: "Sessions", path: "/sessions", icon: ClipboardClock },
-  { name: "Plans", path: "/plans", icon: NotebookPen },
-  { name: "Exercises", path: "/exercises", icon: Dumbbell },
-  { name: "Nutritions", path: "/nutritions", icon: UtensilsCrossed },
-  { name: "Profile", path: "/profile", icon: User },
+  { name: "Tổng quan", path: "/dashboard", icon: Home },
+  { name: "Buổi tập", path: "/sessions", icon: ClipboardClock },
+  { name: "Kế hoạch", path: "/plans", icon: NotebookPen },
+  { name: "Bài tập", path: "/exercises", icon: Dumbbell },
+  { name: "Dinh dưỡng", path: "/nutritions", icon: UtensilsCrossed },
+  { name: "Hồ sơ", path: "/profile", icon: User },
 ];
 
 const Sidebar = ({ open, onClose }: Props) => {
@@ -35,7 +35,7 @@ const Sidebar = ({ open, onClose }: Props) => {
 
   return (
     <>
-      {/* Overlay for mobile */}
+      {/* Lớp phủ cho thiết bị di động */}
       <div
         className={`fixed inset-0 z-40 bg-black/30 transition-opacity lg:hidden ${
           open
@@ -45,17 +45,17 @@ const Sidebar = ({ open, onClose }: Props) => {
         onClick={onClose}
       />
 
-      {/* Sidebar */}
+      {/* Thanh bên (Sidebar) */}
       <aside
         className={`fixed z-50 inset-y-0 left-0 w-72 bg-white/95 backdrop-blur-md border-r border-blue-100 shadow-lg transform transition-transform lg:translate-x-0 ${
           open ? "translate-x-0" : "-translate-x-full"
         } lg:static lg:z-0 lg:w-96 flex flex-col`}
       >
-        {/* Header */}
+        {/* Tiêu đề */}
         <div className="px-6 py-6 border-b border-blue-100 flex items-center justify-between">
           <h1 className="text-2xl font-bold text-blue-700">FitForm</h1>
           <button
-            aria-label="Close sidebar"
+            aria-label="Đóng thanh bên"
             className="lg:hidden p-2 rounded-lg border border-blue-100"
             onClick={onClose}
           >
@@ -63,7 +63,7 @@ const Sidebar = ({ open, onClose }: Props) => {
           </button>
         </div>
 
-        {/* Navigation Links */}
+        {/* Các liên kết điều hướng */}
         <nav className="flex-1 p-4 space-y-2 flex flex-col">
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -86,13 +86,13 @@ const Sidebar = ({ open, onClose }: Props) => {
             );
           })}
 
-          {/* Logout Button */}
+          {/* Nút Đăng xuất */}
           <button
             onClick={handleLogout}
             className="flex items-center gap-3 px-4 py-2 mt-2 rounded-xl font-medium text-red-600 hover:bg-red-50 hover:text-red-700 transition"
           >
             <LogOut size={20} />
-            Logout
+            Đăng xuất
           </button>
         </nav>
       </aside>

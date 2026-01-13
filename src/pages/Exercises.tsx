@@ -45,6 +45,32 @@ const muscleGroups: MuscleGroup[] = [
 const difficulties: Difficulty[] = ["", "beginner", "intermediate", "advanced"];
 const equipments: Equipment[] = ["", "bodyweight", "basic_gym", "full_gym"];
 
+// Bản dịch cho các giá trị hiển thị
+const muscleGroupLabels: Record<string, string> = {
+  "": "Tất cả",
+  legs: "Chân",
+  chest: "Ngực",
+  back: "Lưng",
+  shoulders: "Vai",
+  arms: "Tay",
+  core: "Cơ trọng tâm",
+  other: "Khác",
+};
+
+const difficultyLabels: Record<string, string> = {
+  "": "Tất cả",
+  beginner: "Mới bắt đầu",
+  intermediate: "Trung cấp",
+  advanced: "Nâng cao",
+};
+
+const equipmentLabels: Record<string, string> = {
+  "": "Tất cả",
+  bodyweight: "Trọng lượng cơ thể",
+  basic_gym: "Phòng tập cơ bản",
+  full_gym: "Phòng tập đầy đủ",
+};
+
 export default function Exercises() {
   const defaultFilters: Filters = {
     muscle_group: "",
@@ -80,13 +106,13 @@ export default function Exercises() {
     <div className="flex min-h-screen flex-col bg-linear-to-br from-blue-50 via-white to-blue-100 px-4 sm:px-8 py-8 text-gray-900">
       <div className="flex flex-col sm:flex-row items-center justify-between mb-10 max-w-[1200px] mx-auto w-full space-y-5">
         <h1 className="text-3xl sm:text-5xl font-extrabold text-blue-900 drop-shadow-sm">
-          🏋️ Exercise Explorer
+          🏋️ Khám phá bài tập
         </h1>
         <button
           onClick={() => setOpenModal(true)}
           className="px-6 py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition w-full sm:w-auto"
         >
-          + Create Exercise
+          + Tạo bài tập mới
         </button>
       </div>
 
@@ -95,7 +121,7 @@ export default function Exercises() {
         {/* Muscle Group */}
         <div className="flex flex-col w-full sm:w-auto">
           <label className="text-sm font-semibold mb-1 text-gray-700">
-            Muscle Group:
+            Nhóm cơ:
           </label>
           <select
             className="px-4 py-2 rounded-xl bg-white border border-gray-300 text-gray-800 shadow-sm hover:shadow-md transition w-full sm:w-44"
@@ -106,7 +132,7 @@ export default function Exercises() {
           >
             {muscleGroups.map((m) => (
               <option key={m || "all"} value={m}>
-                {m ? m.charAt(0).toUpperCase() + m.slice(1) : "All"}
+                {muscleGroupLabels[m]}
               </option>
             ))}
           </select>
@@ -115,7 +141,7 @@ export default function Exercises() {
         {/* Difficulty */}
         <div className="flex flex-col w-full sm:w-auto">
           <label className="text-sm font-semibold mb-1 text-gray-700">
-            Difficulty:
+            Độ khó:
           </label>
           <select
             className="px-4 py-2 rounded-xl bg-white border border-gray-300 text-gray-800 shadow-sm hover:shadow-md transition w-full sm:w-44"
@@ -126,7 +152,7 @@ export default function Exercises() {
           >
             {difficulties.map((d) => (
               <option key={d || "all"} value={d}>
-                {d ? d.charAt(0).toUpperCase() + d.slice(1) : "All"}
+                {difficultyLabels[d]}
               </option>
             ))}
           </select>
@@ -135,7 +161,7 @@ export default function Exercises() {
         {/* Equipment */}
         <div className="flex flex-col w-full sm:w-auto">
           <label className="text-sm font-semibold mb-1 text-gray-700">
-            Equipment:
+            Thiết bị:
           </label>
           <select
             className="px-4 py-2 rounded-xl bg-white border border-gray-300 text-gray-800 shadow-sm hover:shadow-md transition w-full sm:w-44"
@@ -146,12 +172,7 @@ export default function Exercises() {
           >
             {equipments.map((equi) => (
               <option key={equi || "all"} value={equi}>
-                {equi
-                  ? equi
-                      .split("_")
-                      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-                      .join(" ")
-                  : "All"}
+                {equipmentLabels[equi]}
               </option>
             ))}
           </select>
@@ -160,11 +181,11 @@ export default function Exercises() {
         {/* Search */}
         <div className="flex flex-col w-full sm:w-auto">
           <label className="text-sm font-semibold mb-1 text-gray-700">
-            Search:
+            Tìm kiếm:
           </label>
           <input
             type="text"
-            placeholder="Search exercise..."
+            placeholder="Tìm tên bài tập..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="px-4 py-2 rounded-xl bg-white border border-gray-300 text-gray-800 shadow-sm hover:shadow-md transition w-full sm:w-64"
@@ -177,18 +198,22 @@ export default function Exercises() {
             onClick={handleReset}
             className="mt-1 sm:mt-0 px-6 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition w-full sm:w-auto"
           >
-            Reset
+            Đặt lại
           </button>
         </div>
       </div>
 
       {/* Exercise Cards */}
       {isLoading ? (
-        <p className="text-center text-gray-500">Loading exercises...</p>
+        <p className="text-center text-gray-500">
+          Đang tải danh sách bài tập...
+        </p>
       ) : error ? (
-        <p className="text-center text-red-500">Failed to load exercises.</p>
+        <p className="text-center text-red-500">
+          Không thể tải danh sách bài tập.
+        </p>
       ) : filteredExercises.length === 0 ? (
-        <p className="text-center text-gray-500">No exercises found.</p>
+        <p className="text-center text-gray-500">Không tìm thấy bài tập nào.</p>
       ) : (
         <div className="w-full max-w-[1200px] mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -204,23 +229,14 @@ export default function Exercises() {
                   <p className="text-gray-700 text-sm mb-3">{ex.description}</p>
                   <div className="text-gray-600 text-sm space-y-1">
                     <p>
-                      Muscle Group:{" "}
-                      {ex.muscle_group
-                        .split("_")
-                        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-                        .join(" ")}
+                      Nhóm cơ:{" "}
+                      {muscleGroupLabels[ex.muscle_group] || ex.muscle_group}
                     </p>
                     <p>
-                      Difficulty Level:{" "}
-                      {ex.difficulty.charAt(0).toUpperCase() +
-                        ex.difficulty.slice(1)}
+                      Độ khó: {difficultyLabels[ex.difficulty] || ex.difficulty}
                     </p>
                     <p>
-                      Equipment Type:{" "}
-                      {ex.equipment
-                        .split("_")
-                        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-                        .join(" ")}
+                      Thiết bị: {equipmentLabels[ex.equipment] || ex.equipment}
                     </p>
                   </div>
                 </div>
@@ -232,7 +248,7 @@ export default function Exercises() {
                     rel="noopener noreferrer"
                     className="mt-4 inline-block text-blue-700 hover:text-blue-500 font-semibold"
                   >
-                    ▶ Watch Tutorial
+                    ▶ Xem hướng dẫn
                   </a>
                 )}
               </div>
@@ -245,7 +261,7 @@ export default function Exercises() {
       <Modal open={openModal}>
         <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4 p-6 relative">
           <h2 className="text-2xl font-bold mb-4 text-blue-900">
-            Create Exercise
+            Tạo bài tập mới
           </h2>
           <CreateExerciseForm onSuccess={() => setOpenModal(false)} />
           <button

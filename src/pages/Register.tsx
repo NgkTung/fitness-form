@@ -23,7 +23,7 @@ const Register = () => {
     e.preventDefault();
     const newErrors: { [key: string]: string } = {};
     Object.entries(registerData).forEach(([key, value]) => {
-      if (!value.trim()) newErrors[key] = "This field is required";
+      if (!value.trim()) newErrors[key] = "Trường này là bắt buộc";
     });
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
@@ -31,13 +31,11 @@ const Register = () => {
     mutation.mutate(
       { ...registerData, password2: registerData.password1 },
       {
-        onSuccess: (data) => {
-          console.log("✅ Registration successful:", data);
+        onSuccess: () => {
           navigate("/login"); // redirect user to login after success
         },
         onError: (error: any) => {
-          console.error("Registration failed:", error);
-          setErrors({ email: "Email or username already exists" });
+          setErrors({ email: "Email hoặc tên đăng nhập đã tồn tại" });
         },
       }
     );
@@ -52,17 +50,17 @@ const Register = () => {
     <div className="w-full max-w-md mx-auto px-6 sm:px-8 md:px-0 space-y-8">
       <div className="text-center">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900">
-          Create Account
+          Tạo tài khoản
         </h1>
         <p className="text-gray-500 mt-2 text-sm sm:text-base">
-          Join our fitness community today
+          Tham gia cộng đồng tập luyện của chúng tôi ngay hôm nay!
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Username
+            Tên đăng nhập
           </label>
           <input
             type="text"
@@ -70,7 +68,7 @@ const Register = () => {
             value={registerData.username}
             onChange={handleChange}
             className={`${baseInput} ${errors.username ? errRing : okRing}`}
-            placeholder="Choose a username"
+            placeholder="Chọn tên đăng nhập"
           />
           {errors.username && (
             <p className="text-sm text-red-600 mt-1">{errors.username}</p>
@@ -87,7 +85,7 @@ const Register = () => {
             value={registerData.email}
             onChange={handleChange}
             className={`${baseInput} ${errors.email ? errRing : okRing}`}
-            placeholder="Enter your email"
+            placeholder="Nhập email của bạn"
           />
           {errors.email && (
             <p className="text-sm text-red-600 mt-1">{errors.email}</p>
@@ -96,7 +94,7 @@ const Register = () => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Password
+            Mật khẩu
           </label>
           <input
             type="password"
@@ -104,7 +102,7 @@ const Register = () => {
             value={registerData.password1}
             onChange={handleChange}
             className={`${baseInput} ${errors.password1 ? errRing : okRing}`}
-            placeholder="Enter your password"
+            placeholder="Nhập mật khẩu của bạn"
           />
           {errors.password1 && (
             <p className="text-sm text-red-600 mt-1">{errors.password1}</p>
@@ -115,14 +113,14 @@ const Register = () => {
           type="submit"
           className="w-full py-3 bg-blue-800 text-white font-semibold rounded-xl hover:bg-blue-900 transition-all shadow-md text-base sm:text-lg"
         >
-          Create Account
+          Tạo tài khoản
         </button>
       </form>
 
       <div className="text-center text-gray-600 text-sm sm:text-base">
-        Already have an account?{" "}
+        Đã tạo tài khoản?{" "}
         <Link to="/login" className="text-blue-800 font-medium hover:underline">
-          Sign In
+          Đăng kí
         </Link>
       </div>
     </div>

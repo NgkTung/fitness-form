@@ -34,10 +34,10 @@ const Dashboard = () => {
   const data = fitnessData ?? defaultFitnessData;
 
   const weightData = [
-    { day: "Nov 10", weight: 65.2 },
-    { day: "Nov 15", weight: 64.8 },
-    { day: "Nov 20", weight: 63.4 },
-    { day: "Nov 25", weight: 62.1 },
+    { day: "10 Th11", weight: 65.2 },
+    { day: "15 Th11", weight: 64.8 },
+    { day: "20 Th11", weight: 63.4 },
+    { day: "25 Th11", weight: 62.1 },
   ];
 
   const dailyGoalCalories = 2500;
@@ -58,14 +58,14 @@ const Dashboard = () => {
 
   const COLORS = ["#3b82f6", "#e5e7eb"];
   const pieData = [
-    { name: "burnt", value: caloriePercent },
-    { name: "remaining", value: 100 - caloriePercent },
+    { name: "đã đốt cháy", value: caloriePercent },
+    { name: "còn lại", value: 100 - caloriePercent },
   ];
 
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center text-blue-600 text-xl">
-        Loading your dashboard...
+        Đang tải bảng điều khiển...
       </div>
     );
   }
@@ -77,10 +77,10 @@ const Dashboard = () => {
         <div className="flex items-center gap-3">
           <div>
             <p className="font-semibold text-gray-900 text-xl">
-              Hi, {user?.username}
+              Chào, {user?.username}
             </p>
             <p className="text-sm text-blue-600">
-              Keep crushing your goals today! 💪
+              Hãy tiếp tục chinh phục mục tiêu hôm nay! 💪
             </p>
           </div>
         </div>
@@ -88,7 +88,7 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-8">
-          {/* HERO STATS */}
+          {/* CHỈ SỐ CHÍNH */}
           <section className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="bg-linear-to-r from-yellow-400 via-orange-400 to-red-500 text-white p-8 rounded-3xl shadow-2xl flex flex-col justify-between min-h-[220px] hover:scale-[1.03] transition">
               <div className="flex items-center justify-between">
@@ -97,11 +97,11 @@ const Dashboard = () => {
                   <p className="text-7xl font-extrabold leading-none">
                     {data.streak}
                   </p>
-                  <p className="text-xl mt-1 font-semibold opacity-90">Days</p>
+                  <p className="text-xl mt-1 font-semibold opacity-90">Ngày</p>
                 </div>
               </div>
               <p className="text-xl font-medium mt-4 opacity-95">
-                🔥 Keep your streak alive!
+                🔥 Đừng để chuỗi ngày tập luyện bị ngắt quãng!
               </p>
             </div>
 
@@ -114,22 +114,22 @@ const Dashboard = () => {
                     <span className="text-3xl ml-1 font-semibold">%</span>
                   </p>
                   <p className="text-xl mt-1 font-semibold opacity-90">
-                    Adherence
+                    Sự kiên trì
                   </p>
                 </div>
               </div>
               <p className="text-xl font-medium mt-4 opacity-95">
-                🎯 Consistency = Progress.
+                🎯 Kiên trì chính là chìa khóa của sự tiến bộ.
               </p>
             </div>
           </section>
 
-          {/* CALORIES + WORKOUT */}
+          {/* CALORIES + TẬP LUYỆN */}
           <section className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {/* Calories Burnt — Beautiful Pie Semi Chart */}
+            {/* Calories Đã Đốt - Biểu đồ Pie */}
             <div className="bg-white rounded-3xl border border-blue-100 shadow-lg p-6 flex flex-col items-center justify-center relative">
               <h2 className="text-lg font-semibold text-blue-800 mb-4">
-                Calories Burnt
+                Calories đã đốt cháy
               </h2>
               <ResponsiveContainer width="100%" height={200}>
                 <PieChart>
@@ -162,23 +162,23 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* Total Workouts */}
+            {/* Tổng số buổi tập */}
             <div className="bg-linear-to-br from-indigo-500 to-blue-600 text-white p-8 rounded-3xl shadow-xl flex flex-col items-center justify-center hover:scale-[1.03] transition">
               <Dumbbell size={80} className="opacity-90 mb-3" />
               <p className="text-6xl font-extrabold leading-none">
                 {data.total_workouts}
               </p>
-              <p className="text-xl mt-1 font-semibold">Total Workouts</p>
-              <p className="text-lg opacity-90 mt-2">
-                Keep pushing — every rep counts 💥
+              <p className="text-xl mt-1 font-semibold">Tổng số buổi tập</p>
+              <p className="text-lg opacity-90 mt-2 text-center">
+                Tiến lên — mỗi nhịp tập đều có giá trị 💥
               </p>
             </div>
           </section>
 
-          {/* WEIGHT PROGRESS */}
+          {/* TIẾN TRÌNH CÂN NẶNG */}
           <section>
             <h2 className="text-xl font-semibold mb-4 text-blue-800">
-              Weight Progress
+              Tiến trình cân nặng
             </h2>
             <div className="bg-white/80 border border-blue-100 rounded-2xl shadow-md p-6">
               <ResponsiveContainer width="100%" height={250}>
@@ -200,10 +200,12 @@ const Dashboard = () => {
           </section>
         </div>
 
-        {/* RIGHT SIDE — BMI */}
+        {/* BÊN PHẢI — BMI */}
         <div className="space-y-8">
           <section className="bg-white/80 border border-blue-100 p-6 rounded-2xl shadow-md">
-            <h2 className="text-lg font-semibold mb-4 text-blue-800">BMI</h2>
+            <h2 className="text-lg font-semibold mb-4 text-blue-800">
+              Chỉ số BMI
+            </h2>
             <div className="flex flex-col items-center">
               <div className="relative w-48 h-48 flex items-center justify-center mb-4">
                 <svg viewBox="0 0 36 36" className="w-full h-full">
@@ -229,17 +231,17 @@ const Dashboard = () => {
                   <p className="text-4xl font-bold text-green-600">
                     {data.current_bmi.toFixed(1)}
                   </p>
-                  <p className="text-sm text-gray-600">Normal</p>
+                  <p className="text-sm text-gray-600">Bình thường</p>
                 </div>
               </div>
               <div className="w-full">
-                <div className="flex justify-between text-xs text-gray-600 mb-1">
-                  <span>Underweight</span>
-                  <span>Normal</span>
-                  <span>Overweight</span>
-                  <span>Obese</span>
+                <div className="flex justify-between text-[10px] text-gray-600 mb-1">
+                  <span>Thiếu cân</span>
+                  <span>Bình thường</span>
+                  <span>Thừa cân</span>
+                  <span>Béo phì</span>
                 </div>
-                <div className="relative w-full h-2 rounded-full bg-linear-to-r from-blue-400  via-yellow-400 to-red-500">
+                <div className="relative w-full h-2 rounded-full bg-linear-to-r from-blue-400 via-yellow-400 to-red-500">
                   <div
                     className="absolute top-0 h-2 w-2 bg-blue-900 rounded-full shadow-md"
                     style={{
@@ -249,7 +251,7 @@ const Dashboard = () => {
                   ></div>
                 </div>
                 <p className="text-xs text-center text-gray-600 mt-2">
-                  18.5 - 25.0 = Normal Range
+                  18.5 - 25.0 = Ngưỡng bình thường
                 </p>
               </div>
             </div>

@@ -61,7 +61,7 @@ export default function CreatePlan() {
 
   const handleSave = async () => {
     if (!name.trim() || planExercises.length === 0) {
-      setMessage("⚠️ Please enter a plan name and at least one exercise.");
+      setMessage("⚠️ Vui lòng nhập tên kế hoạch và thêm ít nhất một bài tập.");
       setMessageType("warning");
       return;
     }
@@ -74,14 +74,14 @@ export default function CreatePlan() {
 
     try {
       await saveMutation.mutateAsync(data);
-      setMessage("✅ Plan saved successfully!");
+      setMessage("✅ Kế hoạch đã được lưu thành công!");
       setMessageType("success");
       setName("");
       setDescription("");
       setPlanExercises([]);
     } catch (error: any) {
-      console.error("❌ Save plan failed:", error);
-      setMessage("❌ Failed to save plan. Please try again.");
+      console.error("❌ Lưu kế hoạch thất bại:", error);
+      setMessage("❌ Không thể lưu kế hoạch. Vui lòng thử lại.");
       setMessageType("error");
     }
   };
@@ -90,7 +90,7 @@ export default function CreatePlan() {
     <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-blue-100 text-gray-800 p-8">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl sm:text-5xl font-extrabold text-blue-900 flex items-center gap-2 mb-6">
-          <Dumbbell className="text-blue-600" /> Create Your Plan
+          <Dumbbell className="text-blue-600" /> Tạo kế hoạch của bạn
         </h1>
 
         {message && (
@@ -102,30 +102,30 @@ export default function CreatePlan() {
         <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-6 space-y-6">
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">
-              Plan Name
+              Tên kế hoạch
             </label>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
-              placeholder="e.g. Build Muscle"
+              placeholder="ví dụ: Tăng cơ bắp"
             />
           </div>
 
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">
-              Description
+              Mô tả
             </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
-              placeholder="Short description about your plan..."
+              placeholder="Mô tả ngắn gọn về kế hoạch của bạn..."
             />
           </div>
 
           <div className="flex justify-between items-center">
-            <h2 className="font-bold text-xl text-blue-800">Exercises</h2>
+            <h2 className="font-bold text-xl text-blue-800">Bài tập</h2>
             <button
               onClick={addExercise}
               disabled={isLoading || !exercises?.length}
@@ -137,18 +137,20 @@ export default function CreatePlan() {
             >
               {isLoading ? (
                 <>
-                  <Loader2 className="animate-spin" size={18} /> Loading...
+                  <Loader2 className="animate-spin" size={18} /> Đang tải...
                 </>
               ) : (
                 <>
-                  <PlusCircle size={18} /> Add Exercise
+                  <PlusCircle size={18} /> Thêm bài tập
                 </>
               )}
             </button>
           </div>
 
           {planExercises.length === 0 && (
-            <p className="text-gray-500 text-sm">No exercises added yet.</p>
+            <p className="text-gray-500 text-sm">
+              Chưa có bài tập nào được thêm.
+            </p>
           )}
 
           {planExercises.map((ex, index) => (
@@ -159,7 +161,7 @@ export default function CreatePlan() {
               <div className="flex flex-wrap gap-4 items-end">
                 <div className="flex flex-col flex-1 min-w-[150px]">
                   <label className="text-sm font-semibold text-gray-700">
-                    Exercise
+                    Bài tập
                   </label>
                   <select
                     value={ex.exercise_id}
@@ -187,7 +189,7 @@ export default function CreatePlan() {
                     className="border border-gray-300 rounded-lg px-2 py-2 focus:outline-none focus:border-blue-500"
                   >
                     {isLoading ? (
-                      <option>Loading...</option>
+                      <option>Đang tải...</option>
                     ) : (
                       exercises?.map((opt) => (
                         <option key={opt.id} value={opt.id}>
@@ -200,7 +202,7 @@ export default function CreatePlan() {
 
                 <div className="flex flex-col w-24">
                   <label className="text-sm font-semibold text-gray-700">
-                    Sets
+                    Số hiệp
                   </label>
                   <input
                     type="number"
@@ -214,7 +216,7 @@ export default function CreatePlan() {
 
                 <div className="flex flex-col w-28">
                   <label className="text-sm font-semibold text-gray-700">
-                    Reps
+                    Số lần (Reps)
                   </label>
                   <input
                     value={ex.reps}
@@ -248,11 +250,11 @@ export default function CreatePlan() {
               >
                 {saveMutation.isPending ? (
                   <>
-                    <Loader2 className="animate-spin" size={18} /> Saving...
+                    <Loader2 className="animate-spin" size={18} /> Đang lưu...
                   </>
                 ) : (
                   <>
-                    <Save size={18} /> Save Plan
+                    <Save size={18} /> Lưu kế hoạch
                   </>
                 )}
               </button>
@@ -263,7 +265,7 @@ export default function CreatePlan() {
         {planExercises.length > 0 && (
           <div className="mt-10">
             <h2 className="text-2xl font-bold text-blue-900 mb-3">
-              Plan Preview
+              Xem trước kế hoạch
             </h2>
             <div className="bg-white border border-gray-200 rounded-2xl shadow p-5">
               <ul className="list-disc list-inside text-gray-700 text-sm space-y-2">
@@ -271,8 +273,8 @@ export default function CreatePlan() {
                   const ex = exercises.find((x) => x.id === e.exercise_id);
                   return (
                     <li key={i}>
-                      {ex?.name ?? "Unknown Exercise"} — {e.sets} sets ×{" "}
-                      {e.reps} reps
+                      {ex?.name ?? "Bài tập không xác định"} — {e.sets} hiệp ×{" "}
+                      {e.reps} lần
                       <br />
                       <span className="text-gray-500">{e.description}</span>
                     </li>
